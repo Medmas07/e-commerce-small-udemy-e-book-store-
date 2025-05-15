@@ -1,0 +1,36 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Accueil - INSATacademy{% endblock %}
+
+{% block body %}
+<header class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-5">Bienvenue sur INSATacademy</h1>
+        <p class="lead">Plateforme éducative adaptative pour tous les niveaux</p>
+        <a href="#" class="btn btn-light btn-lg mt-3">Commencer maintenant</a>
+    </div>
+</header>
+
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4">Espaces Utilisateurs</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <i class="fas fa-child fa-3x text-primary mb-3"></i>
+                <h5>Espace Élève</h5>
+                <p>Cours, exercices, recommandations personnalisées</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
+                <h5>Espace Enseignant</h5>
+                <p>Ajout de contenus, suivi des élèves</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-user-shield fa-3x text-danger mb-3"></i>
+                <h5>Espace Admin</h5>
+                <p>Gestion globale, statistiques, sécurité</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
