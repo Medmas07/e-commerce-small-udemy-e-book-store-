@@ -1,0 +1,11 @@
+# Ignorer les fichiers sensibles
+.env.local
+.env.dev
+
+# Dossiers à ne pas versionner
+/var/
+/vendor/
+/node_modules/
+/public/build/
+/public/bundles/
+/coverage/
