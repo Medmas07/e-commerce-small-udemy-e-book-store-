@@ -1,6 +1,8 @@
 # Ignorer les fichiers sensibles
 .env.local
 .env.dev
+.env.test
+.env
 
 # Dossiers à ne pas versionner
 /var/
