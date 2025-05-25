@@ -1,0 +1,64 @@
+{# templates/security/auth.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Login/Register{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="bg-primary text-white text-center py-3 mb-4">
+    <div class="container">
+        <h1 class="m-0 fw-bold">INSATacademy</h1>
+    </div>
+</div>
+<div class="container mt-5 " style="max-width: 400px;">
+    <ul class="nav nav-tabs" id="authTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if not showRegister %}active{% endif %}" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if showRegister %}active{% endif %}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
+        </li>
+    </ul>
+
+    <div class="tab-content pt-3" id="authTabContent">
+        <div class="tab-pane fade {% if not showRegister %}show active{% endif %}" id="login" role="tabpanel" aria-labelledby="login-tab">
+            {# LOGIN FORM #}
+            <form method="post" action="{{ path('app_login') }}">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="inputEmail" class="form-label">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" name="password" id="inputPassword" required class="form-control" />
+                </div>
+                <a href="{{ path('app_forgot_password_request') }}">Forgot your password?</a>
+
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+
+        <div class="tab-pane fade {% if showRegister %}show active{% endif %}" id="register" role="tabpanel" aria-labelledby="register-tab">
+            {# REGISTRATION FORM #}
+
+            {{ form_start(registrationForm) }}
+             {{ form_widget(registrationForm) }}
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

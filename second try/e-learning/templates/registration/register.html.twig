@@ -1,19 +1,146 @@
-{% extends 'base.html.twig' %}
+{#{% extends 'base1.html.twig' %}#}
 
-{% block title %}Register{% endblock %}
+{#{% block title %}Register{% endblock %}#}
 
-{% block body %}
-    <h1>Register</h1>
+{#{% block body %}#}
+{#    {% for flash_error in app.flashes('verify_email_error') %}#}
+{#        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>#}
+{#    {% endfor %}#}
 
-    {{ form_errors(registrationForm) }}
+{#    <h1>Register</h1>#}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+{#    {{ form_errors(registrationForm) }}#}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
+{#    {{ form_start(registrationForm) }}#}
+{#        {{ form_row(registrationForm.email) }}#}
+{#        {{ form_row(registrationForm.plainPassword, {#}
+{#            label: 'Password'#}
+{#        }) }}#}
+{#        {{ form_row(registrationForm.agreeTerms) }}#}
+
+{#        <button type="submit" class="btn">Register</button>#}
+{#    {{ form_end(registrationForm) }}#}
+{#{% endblock %}#}
+{# templates/security/auth.html.twig #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login / Register Sliding Forms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        /* Optional: card center on screen */
+        body, html {
+            height: 100%;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            width: 400px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 1rem;
+        }
+        .btn-toggle {
+            width: 50%;
+            border-radius: 0;
+        }
+        .form-container {
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        /* Start both forms with max-height 0 (hidden) */
+        #loginForm, #registerForm {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        /* Show active form */
+        .active-form {
+            max-height: 1000px; /* large enough to show full form */
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="d-flex">
+        <button id="btnRegister" class="btn btn-outline-primary btn-toggle fw-semibold">Register</button>
+        <button id="btnLogin" class="btn btn-outline-primary btn-toggle fw-semibold">Login</button>
+    </div>
+    <div class="p-4">
+
+        <div id="registerForm" class="form-container">
+            {{ form_start(registrationForm) }}
+            {{ form_widget(registrationForm) }}
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+            {{ form_end(registrationForm) }}
+        </div>
+
+        <div id="loginForm" class="form-container">
+            <form method="post" action="{{ path('app_login') }}">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="inputUsername" class="form-label">Email</label>
+                    <input type="text" name="_username" id="inputUsername" class="form-control" value="{{ last_username }}"  autofocus>
+                </div>
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" name="_password" id="inputPassword" class="form-control" required>
+                </div>
+                <input type="checkbox" name="_remember_me" id="rememberMe" class="form-check-input">
+                <label for="rememberMe" class="form-check-label">Remember me</label>
+                <button class="btn btn-primary w-100" type="submit">Login</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Elements
+    const btnRegister = document.getElementById('btnRegister');
+    const btnLogin = document.getElementById('btnLogin');
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+
+    // Initialize with register form visible (or change as you want)
+    function showRegister() {
+        registerForm.classList.add('active-form');
+        loginForm.classList.remove('active-form');
+        btnRegister.classList.add('btn-primary');
+        btnRegister.classList.remove('btn-outline-primary');
+        btnLogin.classList.add('btn-outline-primary');
+        btnLogin.classList.remove('btn-primary');
+    }
+
+    function showLogin() {
+        loginForm.classList.add('active-form');
+        registerForm.classList.remove('active-form');
+        btnLogin.classList.add('btn-primary');
+        btnLogin.classList.remove('btn-outline-primary');
+        btnRegister.classList.add('btn-outline-primary');
+        btnRegister.classList.remove('btn-primary');
+    }
+
+    btnRegister.addEventListener('click', showRegister);
+    btnLogin.addEventListener('click', showLogin);
+
+    // Show register form by default
+    showRegister();
+</script>
+
+</body>
+</html>

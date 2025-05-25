@@ -48,14 +48,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $roleType = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $formateurInfo = null;
-
     /**
      * @var Collection<int, Formation>
      */
     #[ORM\OneToMany(targetEntity: Formation::class, mappedBy: 'formateur')]
     private Collection $formations;
+
+    #[ORM\Column]
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -221,6 +223,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $formation->setFormateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

@@ -1,0 +1,102 @@
+{# templates/dashboard.html.twig #}
+
+{% extends 'base1.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+
+        <h1 class="mb-4">Dashboard</h1>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            {# Admin view #}
+            <div class="card p-4 shadow-sm mb-4">
+                <h2>Admin Info</h2>
+                <p>Welcome, Admin. Here is your dashboard summary:</p>
+                {# Example admin info output #}
+                <ul>
+                    <li>Total Users: {{ adminInfo.totalUsers }}</li>
+                    <li>Pending Formations: {{ adminInfo.pendingFormations }}</li>
+                    <li>Site Status: {{ adminInfo.siteStatus }}</li>
+                </ul>
+            </div>
+
+        {% elseif is_granted('ROLE_USER') %}
+            {# User view #}
+
+            <div class="row gy-4">
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 h-100">
+                        <h3>Formations Demand</h3>
+                        {% if formationsDemand is not defined %}
+                            <p>No formations demand at the moment.</p>
+                        {% else %}
+                            <ul class="list-group">
+                                {% for formation in formationsDemand %}
+                                    <li class="list-group-item">
+                                        {{ formation.title }} - Requested on {{ formation.requestDate|date('Y-m-d') }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 h-100 position-relative">
+                        <h3>Classes</h3>
+
+                        {% if not user.isVerified %}
+                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-light bg-opacity-75" style="z-index:10;">
+                                <div class="text-center">
+                                    <h5 class="text-danger">Classes Locked</h5>
+                                    <p>Please verify your email to access classes.</p>
+                                    <a href="{{ path('app_verify_email') }}" class="btn btn-sm btn-primary">Resend Verification Email</a>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if classes is empty %}
+                            <p>No classes available.</p>
+                        {% else %}
+                            <ul class="list-group">
+                                {% for class in classes %}
+                                    <li class="list-group-item">
+                                        {{ class.name }} - Starts: {{ class.startDate|date('Y-m-d') }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+{#                <div class="col-md-4">#}
+{#                    <div class="card shadow-sm p-3 h-100">#}
+{#                        <h3>User Info</h3>#}
+{#                        <form method="post" action="{{ path('user_profile_update') }}">#}
+{#                            <div class="mb-3">#}
+{#                                <label for="firstName" class="form-label">First Name</label>#}
+{#                                <input id="firstName" name="firstName" type="text" value="{{ user.firstName }}" class="form-control" required>#}
+{#                            </div>#}
+{#                            <div class="mb-3">#}
+{#                                <label for="lastName" class="form-label">Last Name</label>#}
+{#                                <input id="lastName" name="lastName" type="text" value="{{ user.lastName }}" class="form-control">#}
+{#                            </div>#}
+{#                            <div class="mb-3">#}
+{#                                <label for="email" class="form-label">Email (read-only)</label>#}
+{#                                <input id="email" type="email" value="{{ user.email }}" class="form-control" readonly>#}
+{#                            </div>#}
+
+{#                            <button type="submit" class="btn btn-primary">Update Info</button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+
+            </div>
+        {% else %}
+            <p>You do not have access to this dashboard.</p>
+        {% endif %}
+    </div>
+{% endblock %}

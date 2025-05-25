@@ -1,0 +1,40 @@
+{# templates/dashboards/dashboardAdmin.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Admin{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h1 class="mb-0">Espace Admin</h1>
+            </div>
+            <div class="card-body text-primary">
+                <p class="lead">Gestion globale, statistiques, sécurité</p>
+
+                {# You can add more dashboard widgets here #}
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light text-primary text-center">
+                            <h5>Statistiques</h5>
+                            <p>Analyse des données importantes</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light text-primary text-center">
+                            <h5>Sécurité</h5>
+                            <p>Gestion des accès et permissions</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light text-primary text-center">
+                            <h5>Gestion Globale</h5>
+                            <p>Administration complète du site</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
