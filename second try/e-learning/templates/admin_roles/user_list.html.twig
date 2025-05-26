@@ -12,6 +12,7 @@
             <th>Full Name</th>
             <th>Email</th>
             <th>Roles</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -21,10 +22,15 @@
                 <td>{{ user.firstName }} {{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles|join(', ') }}</td>
+                <td>
+                    <a href="{{ path('admin_user_edit', {id: user.id}) }}" class="btn btn-sm btn-warning">Modify</a>
+
+                    {{ include('partials/_delete_user_form.html.twig', { user: user }) }}
+                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">No users found.</td>
+                <td colspan="5">No users found.</td>
             </tr>
         {% endfor %}
         </tbody>

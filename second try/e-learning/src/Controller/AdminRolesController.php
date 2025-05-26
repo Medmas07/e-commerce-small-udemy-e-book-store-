@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\FormateurRequest;
 use App\Entity\User;
+use App\Form\UserTypeForm;
 use App\Repository\FormateurRequestRepository;
 use App\Repository\UserRepository;
-use Cassandra\Type\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -120,7 +121,7 @@ final class AdminRolesController extends AbstractController
     public function addUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserTypeForm::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -137,6 +138,47 @@ final class AdminRolesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/dashboard/user/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
+    public function delete(User $user, EntityManagerInterface $em, Request $request): RedirectResponse
+    {
+        $currentUser = $this->getUser();
+
+        // 🛑 Prevent self-deletion
+        if ($user === $currentUser) {
+            $this->addFlash('error', 'You cannot delete your own account.');
+            return $this->redirectToRoute('admin_user_list'); // Replace with the actual route name
+        }
+        // Optional: CSRF protection
+        if ($this->isCsrfTokenValid('delete-user-' . $user->getId(), $request->request->get('_token'))) {
+            $em->remove($user);
+            $em->flush();
+
+            $this->addFlash('success', 'User deleted successfully.');
+        } else {
+            $this->addFlash('error', 'Invalid CSRF token.');
+        }
+
+        return $this->redirectToRoute('admin_user_list'); // Replace with your route name
+    }
+    #[Route('/dashboard/user/{id}/edit', name: 'admin_user_edit')]
+    public function edit(User $user, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(UserTypeForm::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            $this->addFlash('success', 'User updated successfully.');
+
+            return $this->redirectToRoute('admin_user_list'); // Replace with your user list route name
+        }
+
+        return $this->render('user/edit_profile.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);}
     #[Route('/dashboard/users', name: 'admin_user_list')]
     public function listUsers(UserRepository $repo): Response
     {
