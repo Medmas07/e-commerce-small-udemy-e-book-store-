@@ -1,0 +1,19 @@
+
+{% extends 'base1.html.twig' %}
+
+{% block title %}Demandes Formateur{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Demandes de Formateur</h1>
+
+    {% for req in requests %}
+        <div class="card mb-3 p-3">
+            <p><strong>{{ req.user.email }}</strong> a demandé à devenir formateur.</p>
+            <form method="post" action="{{ path('admin_accept_formateur', {id: req.id}) }}">
+                <button class="btn btn-success">Accepter</button>
+            </form>
+        </div>
+    {% else %}
+        <p>Aucune demande en attente.</p>
+    {% endfor %}
+{% endblock %}

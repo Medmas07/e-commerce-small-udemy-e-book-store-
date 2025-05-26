@@ -1,0 +1,61 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <h1 class="mb-4">Dashboard</h1>
+
+        {% if is_granted('ROLE_USER') %}
+            <div class="container mb-5">
+                <h2 class="mb-4">Bienvenue, {{ app.user.firstname }}</h2>
+
+                <div class="row gy-3">
+                    {# Button: Faire une demande de formation #}
+                    <div class="col-md-6">
+                        <a href="{{ path('user_demand') }}" class="btn btn-outline-warning w-100 py-3">
+                            Faire une demande pour être formateur
+                        </a>
+                    </div>
+
+                    {# Button: Voir / Modifier mes informations #}
+                    <div class="col-md-6">
+                        <a href="{{ path('user_info') }}" class="btn btn-secondary w-100 py-4 fs-5">
+                            Voir / Modifier mes informations
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {# Classes Section #}
+            <div class="card shadow-sm p-4 position-relative">
+                <h3>Mes Classes</h3>
+
+                {% if not user.isVerified %}
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-light bg-opacity-75" style="z-index:10;">
+                        <div class="text-center">
+                            <h5 class="text-danger">Accès aux classes verrouillé</h5>
+                            <p>Veuillez vérifier votre adresse email pour accéder à vos classes.</p>
+                            <a href="{{ path('app_verify_email') }}" class="btn btn-sm btn-primary mt-2">Renvoyer l'email de vérification</a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if classes is empty %}
+                    <p class="text-muted">Aucune classe disponible pour le moment.</p>
+                {% else %}
+                    <div class="d-grid gap-2 mt-3">
+                        {% for class in classes %}
+                            <button class="btn btn-outline-dark text-start">
+                                {{ class.name }} – Débute le : {{ class.startDate|date('Y-m-d') }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <p class="alert alert-warning">Vous n'avez pas accès à ce tableau de bord.</p>
+        {% endif %}
+    </div>
+{% endblock %}

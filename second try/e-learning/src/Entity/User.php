@@ -59,9 +59,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    /**
+     * @var Collection<int, FormateurRequest>
+     */
+    #[ORM\OneToMany(targetEntity: FormateurRequest::class, mappedBy: 'user')]
+    private Collection $formateurRequests;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
+        $this->formateurRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +242,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FormateurRequest>
+     */
+    public function getFormateurRequests(): Collection
+    {
+        return $this->formateurRequests;
+    }
+
+    public function addFormateurRequest(FormateurRequest $formateurRequest): static
+    {
+        if (!$this->formateurRequests->contains($formateurRequest)) {
+            $this->formateurRequests->add($formateurRequest);
+            $formateurRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormateurRequest(FormateurRequest $formateurRequest): static
+    {
+        if ($this->formateurRequests->removeElement($formateurRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($formateurRequest->getUser() === $this) {
+                $formateurRequest->setUser(null);
+            }
+        }
 
         return $this;
     }
