@@ -1,19 +1,68 @@
+{# templates/admin/formateur_requests.html.twig #}
 
-{% extends 'base1.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Demandes Formateur{% endblock %}
+{% block title %}Gestion des demandes formateurs{% endblock %}
 
 {% block body %}
-    <h1 class="mb-4">Demandes de Formateur</h1>
+    <h1>Demandes pour devenir formateur</h1>
 
-    {% for req in requests %}
-        <div class="card mb-3 p-3">
-            <p><strong>{{ req.user.email }}</strong> a demandé à devenir formateur.</p>
-            <form method="post" action="{{ path('admin_accept_formateur', {id: req.id}) }}">
-                <button class="btn btn-success">Accepter</button>
-            </form>
-        </div>
-    {% else %}
-        <p>Aucune demande en attente.</p>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
     {% endfor %}
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning">{{ message }}</div>
+    {% endfor %}
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Date de demande</th>
+            <th>Motivation</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for request in requests %}
+            <tr>
+                <td>{{ request.user.firstname }} {{ request.user.lastname }}</td>
+                <td>{{ request.user.email }}</td>
+                <td>{{ request.motivation }}</td>
+                <td>{{ request.experience }}</td>
+                <td>{{ request.requestedAt ? request.requestedAt|date('d/m/Y H:i') : 'N/A' }}</td>
+                <td>{{ request.motivation|default('N/A') }}</td>
+                <td>
+                    {% if not request.treated %}
+                        <span class="badge bg-warning text-dark">En attente</span>
+                    {% elseif request.accepted %}
+                        <span class="badge bg-success">Acceptée</span>
+                    {% else %}
+                        <span class="badge bg-danger">Refusée</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not request.treated %}
+                        <form method="post" action="{{ path('admin_formateur_accept', {'id': request.id}) }}" style="display:inline-block;">
+                            <button class="btn btn-success btn-sm" type="submit" onclick="return confirm('Accepter cette demande ?')">Accepter</button>
+                        </form>
+                        <form method="post" action="{{ path('admin_formateur_refuse', {'id': request.id}) }}" style="display:inline-block;">
+                            <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Refuser cette demande ?')">Refuser</button>
+                        </form>
+                    {% else %}
+                        <em>Aucune action disponible</em>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6">Aucune demande trouvée.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

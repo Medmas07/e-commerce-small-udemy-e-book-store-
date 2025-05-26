@@ -21,7 +21,14 @@ class FormateurRequest
 
     #[ORM\Column]
     private ?\DateTimeImmutable $requested_at = null;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $motivation = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cvPath = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $experience = null;
     #[ORM\ManyToOne(inversedBy: 'formateurRequests')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -81,4 +88,37 @@ class FormateurRequest
         $this->user = $user;
         return $this;
     }
+    public function getMotivation(): ?string
+    {
+        return $this->motivation;
+    }
+
+    public function setMotivation(?string $motivation): static
+    {
+        $this->motivation = $motivation;
+        return $this;
+    }
+
+    public function getCvPath(): ?string
+    {
+        return $this->cvPath;
+    }
+
+    public function setCvPath(?string $cvPath): static
+    {
+        $this->cvPath = $cvPath;
+        return $this;
+    }
+
+    public function getExperience(): ?int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(?int $experience): static
+    {
+        $this->experience = $experience;
+        return $this;
+    }
+
 }

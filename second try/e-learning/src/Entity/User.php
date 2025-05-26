@@ -69,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->formations = new ArrayCollection();
         $this->formateurRequests = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
     }
 
     public function getId(): ?int
@@ -113,12 +114,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): array
     {
-        $this->roles = $roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
 
-        return $this;
-    }
+        return array_unique($roles);    }
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -275,4 +277,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

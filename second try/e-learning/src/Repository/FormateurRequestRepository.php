@@ -30,7 +30,15 @@ class FormateurRequestRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
+    public function findAllWithUser(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.user', 'u')
+            ->addSelect('u')
+            ->orderBy('f.requested_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 //    public function findOneBySomeField($value): ?FormateurRequest
 //    {
 //        return $this->createQueryBuilder('f')

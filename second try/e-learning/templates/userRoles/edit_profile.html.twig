@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+    <h1>Edit Your Profile</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.email) }}
+    <button class="btn btn-primary">Save Changes</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+{% endblock %}
