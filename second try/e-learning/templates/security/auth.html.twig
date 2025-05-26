@@ -42,7 +42,7 @@
                 <a href="{{ path('app_forgot_password_request') }}">Forgot your password?</a>
 
 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('manual_login') }}">
 
                 <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
