@@ -65,6 +65,8 @@ final class AdminRolesController extends AbstractController
         // Add ROLE_FORMATEUR to the user
         $user = $requestEntity->getUser();
         $roles = $user->getRoles();
+
+
         if (!in_array('ROLE_FORMATEUR', $roles)) {
             $roles[] = 'ROLE_FORMATEUR';
             $user->setRoles($roles);
@@ -121,21 +123,26 @@ final class AdminRolesController extends AbstractController
     public function addUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         $user = new User();
-        $form = $this->createForm(UserTypeForm::class, $user);
+
+        $form = $this->createForm(UserTypeForm::class, $user, ['is_admin' => true ,'add'=>true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = 'defaultPassword123'; // You can generate or let admin input
-            $user->setPassword($hasher->hashPassword($user, $plainPassword));
-            $user->setRoles(['ROLE_USER']);
+            $plainPassword = $form->get('password')->getData();
+            if ($plainPassword) {
+                $hashedPassword =$hasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashedPassword);
+            }
+
             $em->persist($user);
             $em->flush();
 
+            $this->addFlash('success', 'User created successfully!');
             return $this->redirectToRoute('admin_user_list');
         }
 
         return $this->render('admin_roles/user_add.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -149,25 +156,25 @@ final class AdminRolesController extends AbstractController
             $this->addFlash('error', 'You cannot delete your own account.');
             return $this->redirectToRoute('admin_user_list'); // Replace with the actual route name
         }
-        // Optional: CSRF protection
-        if ($this->isCsrfTokenValid('delete-user-' . $user->getId(), $request->request->get('_token'))) {
-            $em->remove($user);
-            $em->flush();
+
+        $formateurRequests = $em->getRepository(FormateurRequest::class)->findBy(['user' => $user]);
+        foreach ($formateurRequests as $request) {
+            $em->remove($request);
+        }
+        $em->remove($user);
+        $em->flush();
 
             $this->addFlash('success', 'User deleted successfully.');
-        } else {
-            $this->addFlash('error', 'Invalid CSRF token.');
-        }
 
         return $this->redirectToRoute('admin_user_list'); // Replace with your route name
     }
     #[Route('/dashboard/user/{id}/edit', name: 'admin_user_edit')]
     public function edit(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(UserTypeForm::class, $user);
-
+        $form = $this->createForm(UserTypeForm::class, $user,['add'=>false]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($user);
             $em->flush();
 
             $this->addFlash('success', 'User updated successfully.');
@@ -175,7 +182,7 @@ final class AdminRolesController extends AbstractController
             return $this->redirectToRoute('admin_user_list'); // Replace with your user list route name
         }
 
-        return $this->render('user/edit_profile.html.twig', [
+        return $this->render('admin_roles/edit_profile.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);}

@@ -3,12 +3,13 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
+
     <h1>Edit User {{ user.firstName }} {{ user.lastName }}</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
 
     <button class="btn btn-primary">Save Changes</button>
-    <a href="{{ path('user_list_route') }}" class="btn btn-secondary">Cancel</a>
+    <a href="{{ path('admin_user_list') }}" class="btn btn-secondary">Cancel</a>
     {{ form_end(form) }}
 {% endblock %}

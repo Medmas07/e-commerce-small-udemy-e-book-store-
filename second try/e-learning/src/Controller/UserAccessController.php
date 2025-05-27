@@ -4,22 +4,26 @@ namespace App\Controller;
 
 use App\Entity\FormateurRequest;
 use App\Form\FormateurRequestType;
-use Cassandra\Type\UserType;
+use App\Form\UserTypeForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
 final class UserAccessController extends AbstractController
 {
     #[Route('dashboard/demande-formateur', name: 'user_demand')]
+    // src/Controller/YourController.php
+
+
     public function requestFormateur(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
         $existing = $em->getRepository(FormateurRequest::class)->findOneBy(['user' => $user]);
-        if ($existing) {
+        if ($existing && $existing->isAccepted()) {
             $this->addFlash('warning', 'Vous avez déjà fait une demande.');
             return $this->redirectToRoute('dashboard_path');
         }
@@ -31,6 +35,25 @@ final class UserAccessController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $pdfFile */
+            $pdfFile = $form->get('cvPath')->getData();
+
+            if ($pdfFile) {
+                $newFilename = uniqid() . '.' . $pdfFile->guessExtension();
+
+                try {
+                    $pdfFile->move(
+                        $this->getParameter('pdf_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Erreur lors du téléchargement du fichier.');
+                    return $this->redirectToRoute('user_demand');
+                }
+
+                $demande->setPdfFilename($newFilename);
+            }
+
             $em->persist($demande);
             $em->flush();
 
@@ -42,11 +65,35 @@ final class UserAccessController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/dashboard/mon-profil', name: 'user_show_profile')]
+    public function showProfile(): Response
+    {
+        return $this->render('userRoles/show_profile.html.twig', [
+            'user' => $this->getUser(),
+        ]);
+    }
+    #[Route('/dashboard/delete-profile', name: 'app_delete_user', methods: ['POST', 'DELETE'])]
+    public function deleteProfile(EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+
+        $this->container->get('security.token_storage')->setToken(null); // logout
+        $formateurRequests = $em->getRepository(FormateurRequest::class)->findBy(['user' => $user]);
+        foreach ($formateurRequests as $request) {
+            $em->remove($request);
+        }
+        $em->remove($user);
+        $em->flush();
+        $this->addFlash('success', 'Compte supprimé.');
+        return $this->redirectToRoute('app_logout');
+    }
+
     #[Route('/dashboard/profile', name: 'user_profile')]
     public function editProfile(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserTypeForm::class, $user, ['is_admin' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,7 +102,7 @@ final class UserAccessController extends AbstractController
             return $this->redirectToRoute('user_profile');
         }
 
-        return $this->render('user/edit_profile.html.twig', [
+        return $this->render('userRoles/edit_profile.html.twig', [
             'form' => $form->createView(),
         ]);
     }

@@ -27,7 +27,22 @@ class Formation
 
     #[ORM\Column]
     private ?bool $published = null;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pdfFilename;
 
+    public function getPdfFilename(): ?string
+    {
+        return $this->pdfFilename;
+    }
+
+    public function setPdfFilename(?string $pdfFilename): self
+    {
+        $this->pdfFilename = $pdfFilename;
+
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

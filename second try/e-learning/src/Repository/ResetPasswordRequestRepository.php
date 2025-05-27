@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ResetPasswordRequest;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
@@ -29,4 +30,19 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     {
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);
     }
+    public function removePasswordRequest(ResetPasswordRequestInterface $resetPasswordRequest,object $user): void
+    {
+        $query = $this->_em->createQuery(
+            'SELECT p
+FROM App\Entity\ResetPasswordRequest p
+where p.user = :user
+ASC'
+        )
+            ->setParameter('user', $user );
+
+         $query->execute();
+
+
+    }
+
 }

@@ -10,7 +10,11 @@
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
     {{ form_row(form.email) }}
+
     {{ form_end(form) }}
-    <button class="btn btn-success">Create User</button>
+
+    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+
+
 
 {% endblock %}

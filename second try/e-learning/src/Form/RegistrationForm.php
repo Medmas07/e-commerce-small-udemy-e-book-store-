@@ -29,18 +29,7 @@ class RegistrationForm extends AbstractType
                 'label' => 'Last Name',
                 'required' => false,
             ])
-            ->add('roleType', ChoiceType::class, [
-                'label' => 'Role Type',
-                'choices' => [
-                    'User' => 'user',
-                    'Admin' => 'admin',
-                ],
-                'placeholder' => 'Choose a role',
-            ])
-            ->add('formateurInfo', TextType::class, [
-                'label' => 'Formateur Info',
-                'required' => false,
-            ])
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

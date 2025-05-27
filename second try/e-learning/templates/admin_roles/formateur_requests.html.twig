@@ -5,6 +5,8 @@
 {% block title %}Gestion des demandes formateurs{% endblock %}
 
 {% block body %}
+    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+
     <h1>Demandes pour devenir formateur</h1>
 
     {% for message in app.flashes('success') %}
@@ -22,10 +24,10 @@
         <tr>
             <th>Utilisateur</th>
             <th>Email</th>
-            <th>Date de demande</th>
             <th>Motivation</th>
-            <th>Statut</th>
-            <th>Actions</th>
+            <th>experience</th>
+            <th>Date de demande</th>
+            <th>cvPath</th>
         </tr>
         </thead>
         <tbody>
@@ -37,6 +39,13 @@
                 <td>{{ request.experience }}</td>
                 <td>{{ request.requestedAt ? request.requestedAt|date('d/m/Y H:i') : 'N/A' }}</td>
                 <td>{{ request.motivation|default('N/A') }}</td>
+                <td>
+                    {% if request.pdfFilename %}
+                        <a href="{{ asset('uploads/pdfs/' ~ request.pdfFilename) }}" target="_blank">Voir PDF</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
                 <td>
                     {% if not request.treated %}
                         <span class="badge bg-warning text-dark">En attente</span>

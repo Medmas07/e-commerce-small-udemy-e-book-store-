@@ -8,6 +8,7 @@
     {{ form_start(form) }}
     {{ form_row(form.motivation) }}
     {{ form_row(form.experience) }}
-    <button class="btn btn-primary">Envoyer la demande</button>
     {{ form_end(form) }}
+    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+
 {% endblock %}

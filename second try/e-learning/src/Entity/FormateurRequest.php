@@ -25,8 +25,18 @@ class FormateurRequest
     private ?string $motivation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $cvPath = null;
+    private ?string $pdfFilename = null;
 
+    public function getPdfFilename(): ?string
+    {
+        return $this->pdfFilename;
+    }
+
+    public function setPdfFilename(?string $pdfFilename): static
+    {
+        $this->pdfFilename = $pdfFilename;
+        return $this;
+    }
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $experience = null;
     #[ORM\ManyToOne(inversedBy: 'formateurRequests')]
@@ -99,16 +109,7 @@ class FormateurRequest
         return $this;
     }
 
-    public function getCvPath(): ?string
-    {
-        return $this->cvPath;
-    }
 
-    public function setCvPath(?string $cvPath): static
-    {
-        $this->cvPath = $cvPath;
-        return $this;
-    }
 
     public function getExperience(): ?int
     {
@@ -120,5 +121,7 @@ class FormateurRequest
         $this->experience = $experience;
         return $this;
     }
+
+
 
 }

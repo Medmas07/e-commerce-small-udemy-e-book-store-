@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[ORM\Column]
     // private ?bool $isVerified = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255 , nullable: true)]
     private ?string $roleType = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -114,13 +114,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);    }
+    public function setRoles(array $roles): self
+    {
+        // Guarantee every user has ROLE_USER
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        $this->roles = array_unique($roles);
+
+        return $this;
+    }
 
     /**
      * @see PasswordAuthenticatedUserInterface
