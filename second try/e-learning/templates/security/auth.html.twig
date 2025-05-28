@@ -15,10 +15,10 @@
 <div class="container mt-5 " style="max-width: 400px;">
     <ul class="nav nav-tabs" id="authTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if not showRegister %}active{% endif %}" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
+            <button class="nav-link {% if not showRegister %}active{% endif %}" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" onclick="window.location.href='/login'">Login</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if showRegister %}active{% endif %}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
+            <button class="nav-link {% if showRegister %}active{% endif %}" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" onclick="window.location.href='/register'">Register</button>
         </li>
     </ul>
 
