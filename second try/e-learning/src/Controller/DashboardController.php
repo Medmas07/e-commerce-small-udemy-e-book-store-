@@ -12,6 +12,9 @@ final class DashboardController extends AbstractController
     public function index(): Response
     {
         $user=$this->getUser();
+        if(!$user->isVerified()){
+            return $this->redirectToRoute('app_redirection_process');
+        }
         $this->denyAccessUnlessGranted('ROLE_USER');
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->render('dashboard/dashboardAdmin.html.twig');
@@ -26,7 +29,8 @@ final class DashboardController extends AbstractController
         return $this->render('dashboard/UserDashboard.html.twig', [
             'controller_name' => 'DashboardController',
             'user'=>$this->getUser(),
-            'classes'=>null
+            'classes'=>null,
+
         ]);
     }
 }

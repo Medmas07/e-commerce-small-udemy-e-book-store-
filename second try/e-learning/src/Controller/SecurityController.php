@@ -19,7 +19,6 @@ if ($this->getUser()) {
   return $this->redirectToRoute('dashboard_path');
 }
 
-// get the login error if there is one
 $error = $authenticationUtils->getLastAuthenticationError();
 
 // last username entered by the user
@@ -30,6 +29,7 @@ return $this->render('security/auth.html.twig', [
 'error' => $error,
     'showRegister' => false,
     'registrationForm' => $form->createView(),
+
 
 ]);
 }
