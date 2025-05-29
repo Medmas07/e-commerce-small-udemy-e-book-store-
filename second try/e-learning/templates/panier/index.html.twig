@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>🛒 Mon Panier</h2>
+
+        {% if panier.produitChoisis is empty %}
+            <p>Votre panier est vide.</p>
+        {% else %}
+            <ul class="list-group mb-3">
+                {% for produit in panier.produitChoisis %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                       {# {{ produit.nom }} – {{ produit.prix }} €#}
+                        <span class="text-muted">{{ produit.dateEtTempsAjout|date('d/m/Y') }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+           {# <a href="{{ path('panier_paiement') }}" class="btn btn-success">Passer au paiement</a>#}
+        {% endif %}
+    </div>
+{% endblock %}
