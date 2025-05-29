@@ -1,19 +1,67 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Mon Dashboard{% endblock %}
+
 {% block nav %}
     <div class="collapse navbar-collapse justify-content-end" id="navLinks">
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="{{ path('dashboard_path') }}">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('user_demand') }}">Devient a formateur</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('user_show_profile') }}">Profil</a></li>
+            <li class="nav-item"><a href="{{ path('app_panier') }}" class="btn btn-outline-secondary position-relative me-2">
+                    🛒
+                    {# Si tu veux afficher un nombre de produits dans le panier plus tard : #}
+                    {# <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span> #}
+                </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}"> log out</a></li>
+
         </ul>
     </div>
 {% endblock %}
+
 {% block body %}
+    <style>
+        .block-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* The red diagonal "band" */
+        .block-wrapper.blocked::before {
+            content: "UNVERIFIED";
+            position: absolute;
+            top: 20px;
+            right: -50px;
+            width: 200px;
+            padding: 5px 0;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            transform: rotate(45deg);
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 0 10px red;
+        }
+
+        /* Disable clicking and interaction */
+        .block-wrapper.blocked {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Optional: allow buttons inside block-content to be clickable if you want */
+        .block-wrapper.blocked .block-content {
+            pointer-events: auto;
+        }
+    </style>
+
     <div class="container mt-5">
         <h2 class="mb-4">Bienvenue, {{ app.user.firstname }}</h2>
+
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ label }}">
@@ -21,6 +69,7 @@
                 </div>
             {% endfor %}
         {% endfor %}
+
         <div class="row row-cols-1 row-cols-md-2 g-4">
 
             <div class="col">
@@ -55,6 +104,7 @@
                 </div>
             {% endif %}
 
+
             {% if 'ROLE_FORMATEUR' in app.user.roles %}
                 <div class="col">
                     <div class="card h-100 shadow-sm">
@@ -67,15 +117,18 @@
                 </div>
             {% else %}
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">📝 Devenir formateur</h5>
-                            <p class="card-text">Soumettez une demande pour rejoindre l'équipe des formateurs.</p>
-                            <a href="{{ path('user_demand') }}" class="btn btn-outline-secondary">Faire une demande</a>
+                    <div class="block-wrapper h-100">
+                        <div class="card h-100 shadow-sm block-content ">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">📝 Devenir formateur</h5>
+                                <p class="card-text">Soumettez une demande pour rejoindre l'équipe des formateurs.</p>
+                                <a href="{{ path('user_demand') }}" class="btn btn-outline-secondary ">Faire une demande</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endif %}
+
 
         </div>
     </div>

@@ -26,7 +26,8 @@ final class DashboardController extends AbstractController
         return $this->render('dashboard/UserDashboard.html.twig', [
             'controller_name' => 'DashboardController',
             'user'=>$this->getUser(),
-            'classes'=>null
+            'classes'=>null,
+
         ]);
     }
 }
