@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
@@ -22,8 +24,8 @@ class Formation
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'formations')]
-    private ?User $formateur = null;
+    #[ORM\ManyToOne(inversedBy: 'formation_created')]
+    private ?Formateur $formateur = null;
 
     #[ORM\Column]
     private ?bool $published = null;
@@ -31,6 +33,17 @@ class Formation
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pdfFilename;
+
+    /**
+     * @var Collection<int, Formateur>
+     */
+   /* #[ORM\ManyToMany(targetEntity: Formateur::class, mappedBy: 'formation_created')]
+    private Collection $formateurs;*/
+
+    public function __construct()
+    {
+        //$this->formateurs = new ArrayCollection();
+    }
 
     public function getPdfFilename(): ?string
     {
@@ -84,12 +97,12 @@ class Formation
         return $this;
     }
 
-    public function getFormateur(): ?User
+    public function getFormateur(): ?Formateur
     {
         return $this->formateur;
-    }
+    } 
 
-    public function setFormateur(?User $formateur): static
+    public function setFormateur(?Formateur $formateur): static
     {
         $this->formateur = $formateur;
 
@@ -107,4 +120,8 @@ class Formation
 
         return $this;
     }
+
+    
+
+    
 }

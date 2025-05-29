@@ -45,8 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[ORM\Column]
     // private ?bool $isVerified = null;
 
-    #[ORM\Column(length: 255 , nullable: true)]
-    private ?string $roleType = null;
+    //#[ORM\Column(length: 255 , nullable: true)]
+    //private ?string $roleType = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $formateurInfo = null;
@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: FormateurRequest::class, mappedBy: 'user')]
     private Collection $formateurRequests;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Formateur $formateur = null;
 
     public function __construct()
     {
@@ -186,7 +189,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     //     return $this;
     // }
-
+/*
     public function getRoleType(): ?string
     {
         return $this->roleType;
@@ -198,7 +201,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+*/
     public function getFormateurInfo(): ?string
     {
         return $this->formateurInfo;
@@ -214,12 +217,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Formation>
      */
-    public function getFormations(): Collection
+   /* public function getFormations(): Collection
     {
         return $this->formations;
-    }
+    }*/
 
-    public function addFormation(Formation $formation): static
+   /* public function addFormation(Formation $formation): static
     {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
@@ -227,8 +230,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    }
-
+    }*/
+/*
     public function removeFormation(Formation $formation): static
     {
         if ($this->formations->removeElement($formation)) {
@@ -239,7 +242,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    }
+    }*/
 
     public function isVerified(): bool
     {
@@ -279,6 +282,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $formateurRequest->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormateur(): ?Formateur
+    {
+        return $this->formateur;
+    }
+
+    public function setFormateur(Formateur $formateur): static
+    {
+        // set the owning side of the relation if necessary
+        if ($formateur->getUser() !== $this) {
+            $formateur->setUser($this);
+        }
+
+        $this->formateur = $formateur;
 
         return $this;
     }
