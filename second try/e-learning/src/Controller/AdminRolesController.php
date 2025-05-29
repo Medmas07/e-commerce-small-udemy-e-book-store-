@@ -71,9 +71,9 @@ final class AdminRolesController extends AbstractController
         if (!in_array('ROLE_FORMATEUR', $roles)) {
             $roles[] = 'ROLE_FORMATEUR';
             $user->setRoles($roles);
-           /* $formateur=new Formateur();
+            $formateur=new Formateur();
             $user->setFormateur($formateur);
-            $formateur->setUser($user);*/
+            $formateur->setUser($user);
         }
 
         $em->flush();
