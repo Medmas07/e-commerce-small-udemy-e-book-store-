@@ -12,8 +12,11 @@ final class RedirectionProcessController extends AbstractController
     public function index(): Response
     {
         if ($this->getUser()) {
+            if($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('dashboard_path');
+            }
             if ($this->getUser()->isVerified()) {
-                return $this->redirectToRoute('app_dashboard');
+                return $this->redirectToRoute('dashboard_path');
             } else {
                 return $this->render('redirection_process/access_denied.html.twig', [
                 ]);
