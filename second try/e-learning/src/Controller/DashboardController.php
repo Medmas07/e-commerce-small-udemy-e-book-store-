@@ -11,6 +11,7 @@ final class DashboardController extends AbstractController
     #[Route('/dashboard', name: 'dashboard_path')]
     public function index(): Response
     {
+         /** @var User $user */
         $user=$this->getUser();
         if(!$user->isVerified()){
             return $this->redirectToRoute('app_redirection_process');

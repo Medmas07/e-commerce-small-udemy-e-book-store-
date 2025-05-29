@@ -11,9 +11,11 @@ final class RedirectionProcessController extends AbstractController
     #[Route('/redirection/process', name: 'app_redirection_process')]
     public function index(): Response
     {
-        if ($this->getUser()) {
-            if ($this->getUser()->isVerified()) {
-                return $this->redirectToRoute('app_dashboard');
+        /** @var User $user */
+         $user=$this->getUser();
+        if ($user) {
+            if ($user->isVerified()) {
+                return $this->redirectToRoute('dashboard_path');
             } else {
                 return $this->render('redirection_process/access_denied.html.twig', [
                 ]);
