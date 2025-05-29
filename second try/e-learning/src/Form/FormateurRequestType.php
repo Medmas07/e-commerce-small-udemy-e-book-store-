@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\FormateurRequest;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -21,7 +21,7 @@ class FormateurRequestType extends AbstractType
                 'label' => 'Motivation',
                 'required' => true,
             ])
-            ->add('experience', NumberType::class, [
+            ->add('experience', IntegerType::class, [
                 'label' => 'Expérience en années',
                 'required' => false,
             ])

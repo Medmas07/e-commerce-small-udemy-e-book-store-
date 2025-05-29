@@ -163,26 +163,7 @@ final class AdminRolesController extends AbstractController
 
         return $this->redirectToRoute('admin_user_list'); // Replace with your route name
     }
-    #[Route('/dashboard/user/{id}/edit', name: 'admin_user_edit')]
-    public function edit(User $user, Request $request, EntityManagerInterface $em): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $form = $this->createForm(UserTypeForm::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($user);
-            $em->flush();
-
-            $this->addFlash('success', 'User updated successfully.');
-
-            return $this->redirectToRoute('admin_user_list'); // Replace with your user list route name
-        }
-
-        return $this->render('admin_roles/edit_profile.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-        ]);}
     #[Route('/dashboard/users', name: 'admin_user_list')]
     public function listUsers(UserRepository $repo): Response
     {

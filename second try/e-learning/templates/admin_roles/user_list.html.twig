@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard/dashboardAdmin.html.twig' %}
 
 {% block title %}User List{% endblock %}
 
@@ -25,8 +25,6 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles|join(', ') }}</td>
                 <td>
-                    <a href="{{ path('admin_user_edit', {id: user.id}) }}" class="btn btn-sm btn-warning">Modify</a>
-
                     {{ include('partials/_delete_user_form.html.twig', { user: user }) }}
                 </td>
             </tr>

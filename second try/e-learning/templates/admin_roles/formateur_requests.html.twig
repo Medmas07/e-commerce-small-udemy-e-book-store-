@@ -1,11 +1,10 @@
 {# templates/admin/formateur_requests.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'dashboard/dashboardAdmin.html.twig' %}
 
 {% block title %}Gestion des demandes formateurs{% endblock %}
 
 {% block body %}
-    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
 
     <h1>Demandes pour devenir formateur</h1>
 
@@ -38,7 +37,6 @@
                 <td>{{ request.motivation }}</td>
                 <td>{{ request.experience }}</td>
                 <td>{{ request.requestedAt ? request.requestedAt|date('d/m/Y H:i') : 'N/A' }}</td>
-                <td>{{ request.motivation|default('N/A') }}</td>
                 <td>
                     {% if request.pdfFilename %}
                         <a href="{{ asset('uploads/pdfs/' ~ request.pdfFilename) }}" target="_blank">Voir PDF</a>
