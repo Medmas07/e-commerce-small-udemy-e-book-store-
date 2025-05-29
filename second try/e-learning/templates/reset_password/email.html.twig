@@ -1,9 +1,21 @@
-<h1>Hi!</h1>
+<h1 style="font-family: Arial, sans-serif; color: #333;">Hello!</h1>
 
-<p>To reset your password, please visit the following link</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #555;">
+    To reset your password, please click the link below:
+</p>
 
-<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+<p>
+    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}"
+       style="display: inline-block; padding: 10px 20px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; background-color: #007bff; text-decoration: none; border-radius: 5px;">
+        Reset My Password
+    </a>
+</p>
 
-<p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+<p style="font-family: Arial, sans-serif; font-size: 14px; color: #999;">
+    This link will expire in <strong>1 hour</strong>.
+</p>
 
-<p>Cheers!</p>
+<p style="font-family: Arial, sans-serif; font-size: 16px; color: #555;">
+    Cheers,<br>
+    The Team
+</p>

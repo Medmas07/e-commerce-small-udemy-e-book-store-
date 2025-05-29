@@ -3,12 +3,24 @@
 {% block title %}Demande pour devenir formateur{% endblock %}
 
 {% block body %}
-    <h1>Demande pour devenir formateur</h1>
+    <div class="container mt-4" style="max-width: 600px;">
+        <h1 class="mb-4">Demande pour devenir formateur</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.motivation) }}
-    {{ form_row(form.experience) }}
-    {{ form_end(form) }}
-    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+        {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.motivation) }}
+            {{ form_widget(form.motivation, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+            {{ form_errors(form.motivation) }}
+        </div>
 
+        <div class="mb-3">
+            {{ form_label(form.experience) }}
+            {{ form_widget(form.experience, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+            {{ form_errors(form.experience) }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Envoyer la demande</button>
+        <a href="{{ path('dashboard_path') }}" class="btn btn-secondary ms-2">Retour au tableau de bord</a>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
