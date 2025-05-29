@@ -3,37 +3,80 @@
 {% block title %}User List{% endblock %}
 
 {% block body %}
-    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3">👥 All Users</h1>
+            <a href="{{ path('dashboard_path') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Go back
+            </a>
+        </div>
 
-    <h1>All Users</h1>
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ user.firstName }} {{ user.lastName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                    {% set priority = ['ROLE_ADMIN', 'ROLE_FORMATEUR', 'ROLE_USER'] %}
+                                    {% set highestRole = null %}
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ user.firstName }} {{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles|join(', ') }}</td>
-                <td>
-                    {{ include('partials/_delete_user_form.html.twig', { user: user }) }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">No users found.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                                    {% for role in priority %}
+                                        {% if role in user.roles and highestRole is null %}
+                                            {% set highestRole = role %}
+                                        {% endif %}
+                                    {% endfor %}
 
+                                    {% if highestRole %}
+                                        <span class="badge
+            {% if highestRole == 'ROLE_ADMIN' %} bg-danger
+            {% elseif highestRole == 'ROLE_FORMATEUR' %} bg-info text-dark
+            {% else %} bg-secondary
+            {% endif %}">
+            {{ highestRole|replace({'ROLE_': ''})|lower|capitalize }}
+        </span>
+                                    {% endif %}
+
+                            </td>
+
+                            <td>
+                                {% if user.verified %}
+                                    <span class="badge bg-success">Verified</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Not verified</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+
+                                {% if user.email != app.user.email %}
+                                    {{ include('partials/_delete_user_form.html.twig', { user: user }) }}
+                                {% else %}
+                                    <span class="text-muted" title="Vous ne pouvez pas supprimer votre propre compte">—</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No users found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

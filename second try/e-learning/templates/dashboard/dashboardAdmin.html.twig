@@ -1,17 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Espace Admin{% endblock %}
+
 {% block nav %}
     <div class="collapse navbar-collapse justify-content-end" id="navLinks">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_formateur_requests') }}">See Requests</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_user_add') }}">Add a user</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_user_list') }}">Users list</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ path('dashboard_path') }}">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}"> log out</a></li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_formateur_requests') }}">See Requests</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_user_add') }}">Add a user</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_user_list') }}">Users list</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('dashboard_path') }}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_logout') }}">Log out</a>
+            </li>
         </ul>
     </div>
 {% endblock %}
+
 {% block body %}
     <div class="container mt-5">
         <h1 class="mb-4 text-primary">Espace Admin</h1>
