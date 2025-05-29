@@ -1,20 +1,39 @@
-
 {% extends 'dashboard/dashboardAdmin.html.twig' %}
 
 {% block title %}Add New User{% endblock %}
 
 {% block body %}
-    <h1>Add a New User</h1>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3">➕ Add a New User</h1>
+            <a href="{{ path('dashboard_path') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Go back
+            </a>
+        </div>
 
-    {{ form_start(form) }}
-    {{ form_row(form.firstName) }}
-    {{ form_row(form.lastName) }}
-    {{ form_row(form.email) }}
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
 
-    {{ form_end(form) }}
+                <div class="mb-3">
+                    {{ form_row(form.firstName) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.lastName) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.email) }}
+                </div>
 
-    <a href="{{ path("dashboard_path") }}"><button class="btn btn-primary">Go back</button></a>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-person-plus"></i> Add User
+                    </button>
+                </div>
 
-
-
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
