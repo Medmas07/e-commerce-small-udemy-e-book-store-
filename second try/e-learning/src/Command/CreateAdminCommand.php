@@ -1,5 +1,20 @@
 <?php
+/* Lancer la commande
+Dans le terminal :
 
+bash
+Copier
+Modifier
+php bin/console app:create-admin
+ Il vous sera demandé :
+
+Email
+
+Mot de passe (caché)
+
+Prénom
+
+Nom (facultatif)*/
 namespace App\Command;
 
 use App\Entity\User;
