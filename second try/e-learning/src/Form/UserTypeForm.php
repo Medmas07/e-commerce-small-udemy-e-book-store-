@@ -16,7 +16,6 @@ class UserTypeForm extends AbstractType
             ->add('email')
             ->add('firstName')
             ->add('lastName')
-            ->add('password')
         ;
 
         if ($options['is_admin']) {

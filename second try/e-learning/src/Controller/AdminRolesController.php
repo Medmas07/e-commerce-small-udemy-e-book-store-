@@ -21,25 +21,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AdminRolesController extends AbstractController
 {
-    #[Route('/dashboard/list', name: 'admin_user_list')]
-    public function index(): Response
-    {
-        $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        return $this->render('admin_roles/UserDashboard.html.twig', [
-            'controller_name' => 'AdminRolesController',
-        ]);
-    }
-    #[Route('/dashboard/addUser', name: 'admin_user_add')]
-    public function Add(): Response
-    {
-        $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        return $this->render('admin_roles/UserDashboard.html.twig', [
-            'controller_name' => 'AdminRolesController',
-        ]);
-    }
+
     #[Route('/dashboard/FormatorRequests', name: 'admin_formateur_requests')]
     public function FormatorRequests(FormateurRequestRepository $repo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $requests = $repo->findBy(['treated' => false]);
 
@@ -126,9 +113,11 @@ final class AdminRolesController extends AbstractController
     #[Route('/dashboard/add_user', name: 'admin_user_add')]
     public function addUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $user = new User();
 
-        $form = $this->createForm(UserTypeForm::class, $user, ['is_admin' => true ,'add'=>true]);
+        $form = $this->createForm(UserTypeForm::class, $user, ['is_admin' => true ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -153,6 +142,8 @@ final class AdminRolesController extends AbstractController
     #[Route('/dashboard/user/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
     public function delete(User $user, EntityManagerInterface $em, Request $request): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $currentUser = $this->getUser();
 
         // 🛑 Prevent self-deletion
@@ -175,7 +166,9 @@ final class AdminRolesController extends AbstractController
     #[Route('/dashboard/user/{id}/edit', name: 'admin_user_edit')]
     public function edit(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(UserTypeForm::class, $user,['add'=>false]);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(UserTypeForm::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($user);
@@ -193,6 +186,8 @@ final class AdminRolesController extends AbstractController
     #[Route('/dashboard/users', name: 'admin_user_list')]
     public function listUsers(UserRepository $repo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $users = $repo->findAll();
 
         return $this->render('admin_roles/user_list.html.twig', [
