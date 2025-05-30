@@ -14,6 +14,22 @@
             </div>
         </div>
 
+        {% if formateur %}
+            <div class="card border-primary mb-4">
+                <div class="card-header bg-primary text-white">
+                    <strong>Informations Formateur</strong>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Description :</strong> {{ formateur.description ?: '' }}
+                        <a href="{{ path('formateur_description_edit') }}" class="btn btn-sm btn-outline-primary ms-2">Modifier</a>
+                    </p>
+                    <p><strong>Wallet :</strong> {{ formateur.wallet is not null ? formateur.wallet : 0 }} €</p>
+                    <p><strong>Total des revenus :</strong> {{ formateur.totalRevenue is not null ? formateur.totalRevenue : 0 }} €</p>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="d-flex gap-2">
             <a href="{{ path('user_profile') }}" class="btn btn-primary">Modifier mon profil</a>
 

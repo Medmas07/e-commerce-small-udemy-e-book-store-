@@ -126,8 +126,17 @@ final class AdminRolesController extends AbstractController
                 $hashedPassword =$hasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
+            $formateur = null;
+            if (in_array('ROLE_FORMATEUR', $user->getRoles())) {
+                $formateur = new Formateur();
+                $user->setFormateur($formateur);
+                $formateur->setUser($user);
+            }
 
             $em->persist($user);
+            if ($formateur) {
+                $em->persist($formateur);
+            }
             $em->flush();
 
             $this->addFlash('success', 'User created successfully!');

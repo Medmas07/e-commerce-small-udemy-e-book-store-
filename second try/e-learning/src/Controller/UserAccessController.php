@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Formateur;
 use App\Entity\FormateurRequest;
 use App\Form\FormateurRequestType;
+use App\Form\FormateurTypeForm;
 use App\Form\UserTypeForm;
+use App\Repository\FormateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -67,12 +70,22 @@ final class UserAccessController extends AbstractController
     }
 
     #[Route('/dashboard/mon-profil', name: 'user_show_profile')]
-    public function showProfile(): Response
+    public function showProfile(FormateurRepository $formateurRepository): Response
     {
+        $user = $this->getUser();
+        $formateur = null;
+
+        if (in_array('ROLE_FORMATEUR', $user->getRoles())) {
+            $formateur = $formateurRepository->findOneBy(['user' => $user]);
+        }
+
         return $this->render('userRoles/show_profile.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
+            'formateur' => $formateur,
         ]);
     }
+
+
     #[Route('/dashboard/delete-profile', name: 'app_delete_user', methods: ['POST', 'DELETE'])]
     public function deleteProfile(EntityManagerInterface $em): Response
     {
@@ -90,21 +103,50 @@ final class UserAccessController extends AbstractController
     }
 
     #[Route('/dashboard/profile', name: 'user_profile')]
-    public function editProfile(Request $request, EntityManagerInterface $em): Response
+    public function editProfile(Request $request, EntityManagerInterface $em, FormateurRepository $formateurRepository): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserTypeForm::class, $user, ['is_admin' => false]);
-        $form->handleRequest($request);
+        $formUser = $this->createForm(UserTypeForm::class, $user, ['is_admin' => false]);
+        $formUser->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            $em->persist($user);
             $em->flush();
-            $this->addFlash('success', 'Profile updated!');
+
+            $this->addFlash('success', 'Profil utilisateur mis à jour !');
             return $this->redirectToRoute('user_profile');
         }
 
         return $this->render('userRoles/edit_profile.html.twig', [
-            'form' => $form->createView(),
+            'form' => $formUser->createView(),
         ]);
     }
+    #[Route('/dashboard/profile/formateur-description/edit', name: 'formateur_description_edit')]
+    public function editDescription(Request $request, EntityManagerInterface $em, FormateurRepository $formateurRepository): Response
+    {
+        $user = $this->getUser();
+        $formateur = $formateurRepository->findOneBy(['user' => $user]);
+
+        if (!$formateur) {
+            $this->addFlash('warning', 'Vous n\'êtes pas formateur.');
+            return $this->redirectToRoute('user_profile');
+        }
+
+        if ($request->isMethod('POST')) {
+            $description = $request->request->get('description', '');
+            $formateur->setDescription($description);
+            $em->persist($formateur);
+            $em->flush();
+
+            $this->addFlash('success', 'Description mise à jour.');
+            return $this->redirectToRoute('user_profile');
+        }
+
+        return $this->render('userRoles/edit_formateur_description.html.twig', [
+            'description' => $formateur->getDescription(),
+        ]);
+    }
+
+
 
 }
