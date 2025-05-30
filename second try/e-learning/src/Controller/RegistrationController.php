@@ -63,7 +63,20 @@ class RegistrationController extends AbstractController
             'last_username' => '',
         ]);
     }
-
+    #[Route('/send_verification', name: 'send_verification_email')]
+    public function sendverif(
+    ) {
+        $user=$this->getUser();
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            (new TemplatedEmail())
+                ->from(new Address('academyinsat@gmail.com', 'INSAT Academy'))
+                ->to((string) $user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+        $this->addFlash('success', 'Verification email sent!');
+        return $this->redirectToRoute('app_logout');
+    }
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {

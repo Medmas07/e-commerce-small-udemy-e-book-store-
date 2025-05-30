@@ -35,7 +35,7 @@ security:
               password_parameter: password
               csrf_token_id: authenticate
               csrf_parameter: _csrf_token
-              default_target_path: dashboard_path
+              default_target_path: app_redirection_process
             access_denied_handler:  App\EventListener\AccessDeniedListener
 
                 # by default, the feature is enabled by checking a checkbox in the
