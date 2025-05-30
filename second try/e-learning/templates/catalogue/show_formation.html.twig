@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ formation.title }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>{{ formation.title }}</h2>
+        <p>{{ formation.description }}</p>
+        <p><strong>Prix :</strong> {{ formation.price }} €</p>
+        <a href="{{ path('panier_add', { id: formation.id, type: 'formation' }) }}" class="btn btn-success">Ajouter au panier</a>
+    </div>
+{% endblock %}

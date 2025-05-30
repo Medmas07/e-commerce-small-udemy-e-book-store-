@@ -15,9 +15,9 @@
             {% for formation in formations %}
                 <div class="col-md-4 mb-3">
                     <div class="card p-3 shadow-sm">
-                        <h5>{{ formation.titre }}</h5>
+                        <h5>{{ formation.title }}</h5>
                         <p>{{ formation.description[:100] ~ '...' }}</p>
-                        <a href="#" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('catalogue_formation_show', { id: formation.id }) }}" class="btn btn-primary">Voir</a>
                     </div>
                 </div>
             {% else %}
@@ -30,9 +30,9 @@
             {% for ebook in ebooks %}
                 <div class="col-md-4 mb-3">
                     <div class="card p-3 shadow-sm">
-                        <h5>{{ ebook.titre }}</h5>
+                        <h5>{{ ebook.title }}</h5>
                         <p>{{ ebook.description[:100] ~ '...' }}</p>
-                        <a href="#" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('catalogue_ebook_show', { id: ebook.id }) }}" class="btn btn-primary">Voir</a>
                     </div>
                 </div>
             {% else %}

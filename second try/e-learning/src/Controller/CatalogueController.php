@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Formation;
+use App\Entity\Book;
 use App\Repository\FormationRepository;
 use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,4 +30,25 @@ class CatalogueController extends AbstractController
             'searchQuery' => $query,
         ]);
     }
+
+
+
+    #[Route('/catalogue/formation/{id}', name: 'catalogue_formation_show')]
+    public function showFormation(Formation $formation): Response
+    {
+        return $this->render('catalogue/show_formation.html.twig', [
+            'formation' => $formation,
+        ]);
+    }
+
+    #[Route('/catalogue/ebook/{id}', name: 'catalogue_ebook_show')]
+    public function showEbook(Book $ebook): Response
+    {
+        return $this->render('catalogue/show_ebook.html.twig', [
+            'ebook' => $ebook,
+        ]);
+    }
+
+
+
 }
