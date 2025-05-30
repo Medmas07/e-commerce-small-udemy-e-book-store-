@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FormationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
@@ -29,11 +30,10 @@ class Formation
 
     #[ORM\Column]
     private ?bool $published = null;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $pdfFilename;
 
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $pdfFilename = null;
     /**
      * @var Collection<int, Formateur>
      */

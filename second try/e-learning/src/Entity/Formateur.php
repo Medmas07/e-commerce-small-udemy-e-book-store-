@@ -28,7 +28,7 @@ class Formateur
     /**
      * @var Collection<int, Formation>
      */
-    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'formateur')]
+    #[ORM\OneToMany(mappedBy: 'formateur', targetEntity: Formation::class)]
     private Collection $formation_created;
 
     public function __construct()
