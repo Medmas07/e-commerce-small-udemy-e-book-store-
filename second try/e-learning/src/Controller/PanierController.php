@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ProduitChoisi;
 use App\Entity\User;
 use App\Entity\Panier;
 use App\Entity\Commande;
@@ -35,19 +36,28 @@ final class PanierController extends AbstractController
             'total' => $total,
         ]);
     }
-
-
     #[Route('/paiement', name: 'paiement')]
     public function paiement(StripeService $stripeService, EntityManagerInterface $entityManager): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
         $originalPanier = $user->getPanier();
-        // Clone le panier pour l'archiver dans la commande
-        $panier = $originalPanier->deepClone();
+
+        // Clone the panier and its ProduitChoisis
+        $panier = new Panier();
+
+        foreach ($originalPanier->getProduitChoisis() as $produitChoisiOriginal) {
+            $produitChoisiClone = new ProduitChoisi();
+            $produitChoisiClone->setProduit($produitChoisiOriginal->getProduit());
+            $produitChoisiClone->setQuantity($produitChoisiOriginal->getQuantity());
+            $produitChoisiClone->setPanier($panier);
+            $entityManager->persist($produitChoisiClone);
+            $panier->addProduitChoisi($produitChoisiClone);
+        }
+
         $entityManager->persist($panier);
 
-        // Créer la commande avec le panier cloné
+        // Create the Commande
         $commande = new Commande();
         $commande->setUser($user);
         $commande->setPanier($panier);
@@ -58,22 +68,28 @@ final class PanierController extends AbstractController
         $entityManager->persist($commande);
         $entityManager->flush();
 
-        $originalPanier->clear(); 
+        // Clear the original panier safely
+        foreach ($originalPanier->getProduitChoisis() as $produitChoisi) {
+            $originalPanier->removeProduitChoisi($produitChoisi);
+            $entityManager->remove($produitChoisi);
+        }
         $entityManager->flush();
 
-        // Créer une session de paiement
-        $session = $stripeService->createCheckoutSession([
-            'price_data' => [
-                'currency' => 'eur',
-                'unit_amount' => $panier->getTotal(),
-                'product_data' => [
-                    'name' => 'Nom du produit',
+        // Stripe checkout
+        $session = $stripeService->createCheckoutSession(
+            [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'unit_amount' => (int) round($panier->getTotal() * 100),
+                    'product_data' => [
+                        'name' => 'Nom du produit',
+                    ],
                 ],
+                'quantity' => 1,
             ],
-            'quantity' => 1,
-        ],
-        $this->generateUrl('paiement_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        $this->generateUrl('paiement_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            $this->generateUrl('paiement_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->generateUrl('paiement_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
 
         return $this->redirect($session->url, 303);
     }
