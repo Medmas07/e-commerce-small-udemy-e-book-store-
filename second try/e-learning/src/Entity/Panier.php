@@ -96,4 +96,26 @@ class Panier
 
         return $this;
     }
+
+    // Calculate the total price of the cart
+    public function getTotal(): float
+    {
+        $total = 0.0;
+        foreach ($this->produitChoisis as $produitChoisi) {
+            $total += $produitChoisi->getProduit()->getPrice() * $produitChoisi->getQuantity();
+        }
+        return $total;
+    }
+
+    // Check if the product is already in the cart (to update quantity, for example)
+    public function hasProduit(Produit $produit): ?ProduitChoisi
+    {
+        foreach ($this->produitChoisis as $produitChoisi) {
+            if ($produitChoisi->getProduit()->getId() === $produit->getId()) {
+                return $produitChoisi;
+            }
+        }
+        return null;
+    }
+
 }
