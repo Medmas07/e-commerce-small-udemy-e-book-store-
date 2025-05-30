@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProduitChoisiRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Produit;
 
 #[ORM\Entity(repositoryClass: ProduitChoisiRepository::class)]
 class ProduitChoisi
@@ -13,29 +14,38 @@ class ProduitChoisi
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Formation $formation = null;
+    #[ORM\ManyToOne(targetEntity: Produit::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Produit $produit = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTime $dateEtTempsAjout = null;
 
     #[ORM\ManyToOne(inversedBy: 'produitChoisis')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Panier $panier = null;
 
+    #[ORM\Column(type: 'integer')]
+    private int $quantity = 1;  // Default quantity to 1
+
+    public function __construct()
+    {
+        $this->dateEtTempsAjout = new \DateTime();  // Set default to now on creation
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFormation(): ?Formation
+    public function getProduit(): ?Produit
     {
-        return $this->formation;
+        return $this->produit;
     }
 
-    public function setFormation(?Formation $formation): static
+    public function setProduit(?Produit $produit): static
     {
-        $this->formation = $formation;
+        $this->produit = $produit;
 
         return $this;
     }
@@ -60,6 +70,35 @@ class ProduitChoisi
     public function setPanier(?Panier $panier): static
     {
         $this->panier = $panier;
+
+        return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        if ($quantity < 1) {
+            $quantity = 1; // enforce minimum quantity 1
+        }
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function increaseQuantity(int $amount = 1): static
+    {
+        $this->quantity += $amount;
+
+        return $this;
+    }
+
+    public function decreaseQuantity(int $amount = 1): static
+    {
+        $this->quantity = max(1, $this->quantity - $amount);
 
         return $this;
     }

@@ -6,41 +6,19 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
-class Book
+class Book extends Produit
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $author = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
+    private ?string $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $discipline = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
-
-        return $this;
-    }
 
     public function getAuthor(): ?string
     {
@@ -54,14 +32,14 @@ class Book
         return $this;
     }
 
-    public function getType(): ?string
+    public function getCategory(): ?string
     {
-        return $this->type;
+        return $this->category;
     }
 
-    public function setType(?string $type): static
+    public function setCategory(?string $type): static
     {
-        $this->type = $type;
+        $this->category = $type;
 
         return $this;
     }
