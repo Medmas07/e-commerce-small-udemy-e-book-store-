@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ProduitChoisiRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Produit;
+
 
 #[ORM\Entity(repositoryClass: ProduitChoisiRepository::class)]
 class ProduitChoisi
@@ -13,8 +15,10 @@ class ProduitChoisi
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Formation $formation = null;
+    #[ORM\ManyToOne(targetEntity: Produit::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Produit $produit = null;
+
 
     #[ORM\Column]
     private ?\DateTime $dateEtTempsAjout = null;
@@ -28,17 +32,18 @@ class ProduitChoisi
         return $this->id;
     }
 
-    public function getFormation(): ?Formation
+    public function getProduit(): ?Produit
     {
-        return $this->formation;
+        return $this->produit;
     }
 
-    public function setFormation(?Formation $formation): static
+    public function setProduit(?Produit $produit): static
     {
-        $this->formation = $formation;
+        $this->produit = $produit;
 
         return $this;
     }
+
 
     public function getDateEtTempsAjout(): ?\DateTime
     {
