@@ -14,7 +14,7 @@ class BookForm extends AbstractType
         $builder
             ->add('title')
             ->add('author')
-            ->add('type')
+            ->add('category')
             ->add('discipline')
         ;
     }
