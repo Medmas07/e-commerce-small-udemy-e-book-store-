@@ -25,6 +25,32 @@ class FormationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchAdvanced(?string $query, ?float $minPrice, ?float $maxPrice, ?string $sort = null): array
+    {
+        $qb = $this->createQueryBuilder('f');
+
+        if ($query) {
+            $qb->andWhere('f.title LIKE :q')->setParameter('q', "%$query%");
+        }
+
+        if ($minPrice !== null) {
+            $qb->andWhere('f.price >= :min')->setParameter('min', $minPrice);
+        }
+
+        if ($maxPrice !== null) {
+            $qb->andWhere('f.price <= :max')->setParameter('max', $maxPrice);
+        }
+
+        if ($sort === 'price_asc') {
+            $qb->orderBy('f.price', 'ASC');
+        } elseif ($sort === 'price_desc') {
+            $qb->orderBy('f.price', 'DESC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 
 //    /**
 //     * @return Formation[] Returns an array of Formation objects

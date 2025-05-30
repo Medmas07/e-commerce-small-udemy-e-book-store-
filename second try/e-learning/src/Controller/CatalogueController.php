@@ -20,16 +20,42 @@ class CatalogueController extends AbstractController
         BookRepository $ebookRepo
     ): Response {
         $query = $request->query->get('q', '');
+        $minPrice = $request->query->get('minPrice');
+        $maxPrice = $request->query->get('maxPrice');
+        $minPrice = is_numeric($minPrice) ? (float)$minPrice : null;
+        $maxPrice = is_numeric($maxPrice) ? (float)$maxPrice : null;
+        $type = $request->query->get('type');
+        $category = $request->query->get('category');
+        $sort = $request->query->get('sort');
 
-        $formations = $formationRepo->searchByTitle($query);
-        $ebooks = $ebookRepo->searchByTitle($query);
+
+        $formations = [];
+        $ebooks = [];
+
+        if (!$type || $type === 'formation') {
+            $formations = $formationRepo->searchAdvanced($query, $minPrice, $maxPrice, $sort);
+        }
+
+        if (!$type || $type === 'book') {
+            $ebooks = $ebookRepo->searchAdvanced($query, $minPrice, $maxPrice, $category, $sort);
+        }
+
+        $allCategories = $ebookRepo->findAllCategories();
 
         return $this->render('catalogue/index.html.twig', [
             'formations' => $formations,
             'ebooks' => $ebooks,
             'searchQuery' => $query,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
+            'selectedType' => $type,
+            'selectedCategory' => $category,
+            'allCategories' => $allCategories,
+            'selectedSort' => $sort,
         ]);
     }
+
+
 
 
 
