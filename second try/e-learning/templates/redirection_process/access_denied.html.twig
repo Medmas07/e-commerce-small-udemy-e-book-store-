@@ -1,26 +1,28 @@
 {% extends 'base.html.twig' %}
-{% block nav %}
-{% endblock %}
+
+{% block nav %}{% endblock %}
 {% block title %}Please Verify Your Email{% endblock %}
 
 {% block body %}
     <div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-        <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-            <h3 class="card-title mb-3 text-center">Please Verify Your Email</h3>
-            <p class="card-text text-center mb-4">
-                You must verify your email address to access all features.<br>
-                Check your inbox for the verification link.
+        <div class="card shadow-sm p-4 rounded" style="max-width: 420px; width: 100%;">
+            <h2 class="text-center text-primary mb-3">📧 Verify Your Email</h2>
+            <p class="text-center text-muted mb-4">
+                To continue, please verify your email address.<br>
+                A verification link has been sent to your inbox.
             </p>
+
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ label }}" role="alert">
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
                         {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
             {% endfor %}
 
             <form method="post" action="{{ path('send_verification_email') }}">
-                <button type="submit" class="btn btn-primary w-100">
+                <button type="submit" class="btn btn-outline-primary w-100">
                     Resend Verification Email
                 </button>
             </form>
