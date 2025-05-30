@@ -20,10 +20,10 @@
                 <tbody>
                 {% for produitChoisi in panier.produitChoisis %}
                     <tr>
-                        <td>{{ produitChoisi.produit.titre }}</td>
+                        <td>{{ produitChoisi.produit.title }}</td>
                         <td>{{ produitChoisi.produit.getType() }}</td>
                         <td>{{ produitChoisi.dateEtTempsAjout|date('d/m/Y H:i') }}</td>
-                        <td>{{ produitChoisi.produit.prix }} €</td>
+                        <td>{{ produitChoisi.produit.price }} €</td>
                         <td>
                             <a href="{{ path('panier_remove', { id: produitChoisi.produit.id }) }}"
                                class="btn btn-sm btn-outline-danger"
