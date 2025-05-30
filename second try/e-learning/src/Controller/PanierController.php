@@ -21,7 +21,7 @@ final class PanierController extends AbstractController
         $panier = $panierService->getCurrentPanier();
         $total = $panierService->calculateTotal();
 
-        return $this->render('panier/index.html.twig', [
+        return $this->render('panier/admin.html.twig', [
             'panier' => $panier,
             'total' => $total,
         ]);
