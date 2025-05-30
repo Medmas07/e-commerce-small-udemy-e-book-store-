@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Catalogue</h2>
+
+        <form method="get" class="mb-4">
+            <input type="text" name="q" placeholder="Rechercher..." class="form-control" value="{{ searchQuery }}">
+        </form>
+
+        <h3>Formations</h3>
+        <div class="row">
+            {% for formation in formations %}
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 shadow-sm">
+                        <h5>{{ formation.title }}</h5>
+                        <p>{{ formation.description[:100] ~ '...' }}</p>
+                        <a href="{{ path('catalogue_formation_show', { id: formation.id }) }}" class="btn btn-primary">Voir</a>
+                    </div>
+                </div>
+            {% else %}
+                <p>Aucune formation trouvée.</p>
+            {% endfor %}
+        </div>
+
+        <h3 class="mt-5">EBooks</h3>
+        <div class="row">
+            {% for ebook in ebooks %}
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 shadow-sm">
+                        <h5>{{ ebook.title }}</h5>
+                        <p>{{ ebook.description[:100] ~ '...' }}</p>
+                        <a href="{{ path('catalogue_ebook_show', { id: ebook.id }) }}" class="btn btn-primary">Voir</a>
+                    </div>
+                </div>
+            {% else %}
+                <p>Aucun eBook trouvé.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

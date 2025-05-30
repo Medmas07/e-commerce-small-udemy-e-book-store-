@@ -3,21 +3,55 @@
 {% block title %}Mon Panier{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h2>🛒 Mon Panier</h2>
-         
-        {% if panier.produitChoisis is empty %}
-            <p>Votre panier est vide.</p>
-        {% else %}
-            <ul class="list-group mb-3">
-                {% for produit in panier.produitChoisis %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                       {# {{ produit.nom }} – {{ produit.prix }} €#}
-                        <span class="text-muted">{{ produit.dateEtTempsAjout|date('d/m/Y') }}</span>
-                    </li>
+    <div class="container mt-5">
+        <h1 class="mb-4">🛒 Mon Panier</h1>
+
+        {% if panier.produitChoisis|length > 0 %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Type</th>
+                    <th>Date d'ajout</th>
+                    <th>Prix</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for produitChoisi in panier.produitChoisis %}
+                    <tr>
+                        <td>{{ produitChoisi.produit.titre }}</td>
+                        <td>
+                            {% if produitChoisi.produit is instance of('App\\Entity\\Formation') %}
+                                Formation
+                            {% elseif produitChoisi.produit is instance of('App\\Entity\\EBook') %}
+                                E-Book
+                            {% else %}
+                                Autre
+                            {% endif %}
+                        </td>
+                        <td>{{ produitChoisi.dateEtTempsAjout|date('d/m/Y H:i') }}</td>
+                        <td>{{ produitChoisi.produit.prix }} €</td>
+                        <td>
+                            <a href="{{ path('panier_remove', { id: produitChoisi.produit.id }) }}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Supprimer ce produit du panier ?')">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
-            
+                </tbody>
+            </table>
+
+            <div class="text-end">
+                <h4>Total : {{ total }} €</h4>
+                <a href="#" class="btn btn-primary mt-3 disabled">Passer à la commande</a> {# To be implemented #}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Votre panier est vide.
+            </div>
         {% endif %}
         <a href="{{ path('paiement') }}" class="btn btn-success">Passer au paiement</a>
        <a href="{{ path('mes_commandes') }}" class="btn btn-outline-secondary btn-sm" title="Historique des commandes">
