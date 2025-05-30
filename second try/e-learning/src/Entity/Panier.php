@@ -98,11 +98,11 @@ class Panier
     }
 
     // Calculate the total price of the cart
-    public function getTotal(): float
+   public function getTotal(): float
     {
         $total = 0.0;
         foreach ($this->produitChoisis as $produitChoisi) {
-            $total += $produitChoisi->getProduit()->getPrice() * $produitChoisi->getQuantity();
+            $total += $produitChoisi->getTotalPrice();
         }
         return $total;
     }

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container mt-4">
         <h2>🛒 Mon Panier</h2>
-
+         
         {% if panier.produitChoisis is empty %}
             <p>Votre panier est vide.</p>
         {% else %}
@@ -17,8 +17,10 @@
                     </li>
                 {% endfor %}
             </ul>
-            
+            <a href="{{ path('paiement') }}" class="btn btn-success">Passer au paiement</a>
         {% endif %}
-        <a href="{{ path('paiement') }}" class="btn btn-success">Passer au paiement</a>
+       <a href="{{ path('mes_commandes') }}" class="btn btn-outline-secondary btn-sm" title="Historique des commandes">
+                <i class="fas fa-clock-rotate-left"></i> Historique
+            </a>
     </div>
 {% endblock %}

@@ -102,4 +102,10 @@ class ProduitChoisi
 
         return $this;
     }
+    public function getTotalPrice(): float
+    {
+        return $this->produit?->getPrice() * $this->quantity;
+    }
+
+    
 }
