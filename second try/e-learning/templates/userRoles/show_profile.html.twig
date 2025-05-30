@@ -1,18 +1,26 @@
 {% extends 'dashboard/UserDashboard.html.twig' %}
 
 {% block body %}
-    <h1>Mon Profil</h1>
+    <div class="container py-4">
+        <h1 class="mb-4">Mon Profil</h1>
 
-    <ul>
-        <li>Email : {{ user.email }}</li>
-        <li>Prénom : {{ user.firstName }}</li>
-        <li>Nom : {{ user.lastName }}</li>
-    </ul>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Email :</strong> {{ user.email }}</li>
+                    <li class="list-group-item"><strong>Prénom :</strong> {{ user.firstName }}</li>
+                    <li class="list-group-item"><strong>Nom :</strong> {{ user.lastName }}</li>
+                </ul>
+            </div>
+        </div>
 
-    <a href="{{ path('user_profile') }}" class="btn btn-primary">Modifier mon profil</a>
+        <div class="d-flex gap-2">
+            <a href="{{ path('user_profile') }}" class="btn btn-primary">Modifier mon profil</a>
 
-    <form method="post" action="{{ path('app_delete_user') }}" onsubmit="return confirm('Es-tu sûr ?');">
-        <input type="hidden" name="_method" value="DELETE">
-        <button class="btn btn-danger mt-2">Supprimer mon compte</button>
-    </form>
+            <form method="post" action="{{ path('app_delete_user') }}" onsubmit="return confirm('Es-tu sûr de vouloir supprimer ton compte ?');">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger">Supprimer mon compte</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -17,10 +17,10 @@ class UserTypeForm extends AbstractType
             ->add('email')
             ->add('firstName')
             ->add('lastName')
-            ->add('password')
         ;
 
         if ($options['is_admin']) {
+            $builder->add('password', PasswordType::class);
             $builder->add('roles', ChoiceType::class, [
                 'choices' => [
                     'User' => 'ROLE_USER',
@@ -31,10 +31,7 @@ class UserTypeForm extends AbstractType
                 'label' => 'Roles',
             ]);
         }
- 
-            $builder->add('submit', SubmitType::class ,[
-                'label' => 'Save'
-            ]);
+
 
 
     }

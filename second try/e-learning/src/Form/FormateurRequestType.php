@@ -29,8 +29,7 @@ class FormateurRequestType extends AbstractType
                 'label' => 'Votre CV (PDF)',
                 'required' => false,
                 'mapped' => false, // if you're not saving the file directly into the entity
-            ])
-            ->add('submit',SubmitType::class,[]);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
