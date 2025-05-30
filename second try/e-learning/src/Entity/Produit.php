@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Formation;
+use App\Entity\Book;
 
 #[ORM\Entity]
 #[ORM\InheritanceType("JOINED")]
@@ -76,5 +77,14 @@ abstract class Produit
 
         return $this;
     }
+    public function getType(): string
+    {
+        return match (true) {
+            $this instanceof \App\Entity\Formation => 'Formation',
+            $this instanceof \App\Entity\Book => 'E-Book',
+            default => 'Autre',
+        };
+    }
+
 
 }

@@ -40,3 +40,9 @@ Pourquoi utiliser .env.local et pas .env ?
 Le fichier .env est versionné dans git (commit), il sert de base commune.
 
 .env.local est personnel, non versionné (dans .gitignore), chacun peut configurer son environnement sans impacter les autres.
+
+
+
+composer require stripe/stripe-php   
+
+composer require 

@@ -42,12 +42,9 @@
                 <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
 
 
-                <li class="nav-item"><a class="nav-link" href="#">Formations</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('catalogue_index') }}">Catalogue</a></li>
 
-              {#  <li class="nav-item"><a href="{{ path('app_panier') }}" class="btn btn-outline-secondary position-relative me-2">
-                🛒
-                
-            </a></li>#}
+              
                 
             </ul>
             <div class="dropdown">
@@ -83,7 +80,7 @@
   <div class="offcanvas-body">
     <ul class="list-unstyled">
       <li><a href="{{ path('home') }}" class="text-decoration-none d-block py-2">Accueil</a></li>
-      <li><a href="#" class="text-decoration-none d-block py-2">Formations</a></li>
+      <li><a href="{{ path('catalogue_index') }}" class="text-decoration-none d-block py-2">Catalogue</a></li>
       <li><a href="#" class="text-decoration-none d-block py-2">Nos offres</a></li>
       <li><a href="#" class="text-decoration-none d-block py-2">Contact</a></li>
     </ul>

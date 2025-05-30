@@ -21,15 +21,7 @@
                 {% for produitChoisi in panier.produitChoisis %}
                     <tr>
                         <td>{{ produitChoisi.produit.titre }}</td>
-                        <td>
-                            {% if produitChoisi.produit is instance of('App\\Entity\\Formation') %}
-                                Formation
-                            {% elseif produitChoisi.produit is instance of('App\\Entity\\EBook') %}
-                                E-Book
-                            {% else %}
-                                Autre
-                            {% endif %}
-                        </td>
+                        <td>{{ produitChoisi.produit.getType() }}</td>
                         <td>{{ produitChoisi.dateEtTempsAjout|date('d/m/Y H:i') }}</td>
                         <td>{{ produitChoisi.produit.prix }} €</td>
                         <td>

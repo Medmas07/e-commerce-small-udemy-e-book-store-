@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Service;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\ProduitChoisi;
@@ -22,6 +22,7 @@ class PanierService
 
     public function getCurrentPanier(): Panier
     {
+        /** @var \App\Entity\User $user */
         $user = $this->security->getUser();
         $panier = $user->getPanier();
 
