@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Service;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\ProduitChoisi;
