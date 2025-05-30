@@ -15,9 +15,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Produit;
 use App\Service\PanierService;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Bundle\SecurityBundle\Security;
 
 
 final class PanierController extends AbstractController
@@ -30,7 +29,7 @@ final class PanierController extends AbstractController
         $panier = $panierService->getCurrentPanier();
         $total = $panierService->calculateTotal();
 
-        return $this->render('panier/index.html.twig', [
+        return $this->render('panier/admin.html.twig', [
             'panier' => $panier,
             'total' => $total,
         ]);

@@ -52,12 +52,18 @@
                         <h5>{{ formation.title }}</h5>
                         <p>{{ formation.description[:100] ~ '...' }}</p>
                         <a href="{{ path('catalogue_formation_show', { id: formation.id }) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('admin_catalogue_formation_edit', { id: formation.id }) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('admin_catalogue_formation_delete', { id: formation.id }) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ formation.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
                     </div>
                 </div>
             {% else %}
                 <p>Aucune formation trouvée.</p>
             {% endfor %}
         </div>
+
 
         <h3 class="mt-5">EBooks</h3>
         <div class="row">
@@ -67,6 +73,11 @@
                         <h5>{{ ebook.title }}</h5>
                         <p>{{ ebook.description[:100] ~ '...' }}</p>
                         <a href="{{ path('catalogue_ebook_show', { id: ebook.id }) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('admin_catalogue_book_edit', { id: book.id }) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('admin_catalogue_book_delete', { id: book.id }) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ formation.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
                     </div>
                 </div>
             {% else %}

@@ -26,6 +26,55 @@ class BookRepository extends ServiceEntityRepository
     }
 
 
+    public function searchAdvanced(
+        ?string $query,
+        ?float $minPrice,
+        ?float $maxPrice,
+        ?string $category = null,
+        ?string $sort = null
+    ): array {
+        $qb = $this->createQueryBuilder('b');
+
+        if ($query) {
+            $qb->andWhere('b.title LIKE :q')
+                ->setParameter('q', "%$query%");
+        }
+
+        if ($minPrice !== null) {
+            $qb->andWhere('b.price >= :min')
+                ->setParameter('min', $minPrice);
+        }
+
+        if ($maxPrice !== null) {
+            $qb->andWhere('b.price <= :max')
+                ->setParameter('max', $maxPrice);
+        }
+
+        if ($category) {
+            $qb->andWhere('b.category = :cat')
+                ->setParameter('cat', $category);
+        }
+
+        if ($sort === 'price_asc') {
+            $qb->orderBy('b.price', 'ASC');
+        } elseif ($sort === 'price_desc') {
+            $qb->orderBy('b.price', 'DESC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAllCategories(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('DISTINCT b.category')
+            ->where('b.category IS NOT NULL')
+            ->orderBy('b.category', 'ASC')
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
+
+
 //    /**
 //     * @return Book[] Returns an array of Book objects
 //     */
