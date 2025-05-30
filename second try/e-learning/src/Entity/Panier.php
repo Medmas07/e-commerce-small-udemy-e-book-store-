@@ -16,7 +16,7 @@ class Panier
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'panier', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     #[ORM\OneToOne(mappedBy: 'panier', cascade: ['persist', 'remove'])]
@@ -98,11 +98,11 @@ class Panier
     }
 
     // Calculate the total price of the cart
-    public function getTotal(): float
+   public function getTotal(): float
     {
         $total = 0.0;
         foreach ($this->produitChoisis as $produitChoisi) {
-            $total += $produitChoisi->getProduit()->getPrice() * $produitChoisi->getQuantity();
+            $total += $produitChoisi->getTotalPrice();
         }
         return $total;
     }
@@ -117,5 +117,47 @@ class Panier
         }
         return null;
     }
+   // pour garder l'historique des paniers , c'est comme si on fait une capture du panier à chaque commande
+    public function __clone(): void
+    {
+        $this->id = null;
+
+        $clonedProduits = new ArrayCollection();
+
+        foreach ($this->getProduitChoisis() as $produitChoisi) {
+            $cloned = clone $produitChoisi;
+            $cloned->setPanier($this); // attache le clone à ce panier
+            $clonedProduits->add($cloned);
+        }
+
+        $this->produitChoisis = $clonedProduits;
+    }
+
+    public function clear(): void
+    {
+        foreach ($this->getProduitChoisis() as $produitChoisi) {
+            $this->removeProduitChoisi($produitChoisi);
+        }
+    }
+
+    public function deepClone(): Panier
+    {
+        $newPanier = new self();
+        foreach ($this->getProduitChoisis() as $produitChoisi) {
+            $newProduitChoisi = new ProduitChoisi();
+            $newProduitChoisi->setProduit($produitChoisi->getProduit());
+            $newProduitChoisi->setQuantity($produitChoisi->getQuantity());
+            $newProduitChoisi->setDateEtTempsAjout(clone $produitChoisi->getDateEtTempsAjout());
+            $newProduitChoisi->setPanier($newPanier);
+            $newPanier->addProduitChoisi($newProduitChoisi);
+        }
+
+        return $newPanier;
+    }
+
+
+
+    
+
 
 }

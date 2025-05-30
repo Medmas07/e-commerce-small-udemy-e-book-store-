@@ -102,4 +102,18 @@ class ProduitChoisi
 
         return $this;
     }
+    public function getTotalPrice(): float
+    {
+        return $this->produit?->getPrice() * $this->quantity;
+    }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->dateEtTempsAjout = new \DateTime(); // Remettre à maintenant si tu veux archiver le moment du clonage
+    }
+
+    
+
+    
 }

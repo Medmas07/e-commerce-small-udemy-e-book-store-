@@ -1,0 +1,12 @@
+<h2>Mes commandes</h2>
+<ul>
+    {% for commande in commandes %}
+        <li>
+            Commande du {{ commande.dateCommande|date('d/m/Y H:i') }} -
+            Total : {{ commande.panier.getTotal() }} € -
+            statu : {{ commande.getStatut().value }} 
+        </li>
+    {% else %}
+        <li>Aucune commande pour l’instant.</li>
+    {% endfor %}
+</ul>
