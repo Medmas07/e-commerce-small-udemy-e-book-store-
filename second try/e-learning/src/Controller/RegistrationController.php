@@ -17,6 +17,8 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Entity\Panier;
+
 
 class RegistrationController extends AbstractController
 {
@@ -40,8 +42,11 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword($user, $plainPassword)
             );
+            $panier = new Panier();
+            $panier->setUser($user);
 
             $entityManager->persist($user);
+            $entityManager->persist($panier);
             $entityManager->flush();
 
             // Email confirmation (optional)
@@ -66,6 +71,7 @@ class RegistrationController extends AbstractController
     #[Route('/send_verification', name: 'send_verification_email')]
     public function sendverif(
     ) {
+        /** @var User $user */
         $user=$this->getUser();
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
             (new TemplatedEmail())

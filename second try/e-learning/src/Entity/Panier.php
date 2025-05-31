@@ -25,7 +25,7 @@ class Panier
     /**
      * @var Collection<int, ProduitChoisi>
      */
-    #[ORM\OneToMany(targetEntity: ProduitChoisi::class, mappedBy: 'panier')]
+    #[ORM\OneToMany(mappedBy: 'panier', targetEntity: ProduitChoisi::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $produitChoisis;
 
     public function __construct()

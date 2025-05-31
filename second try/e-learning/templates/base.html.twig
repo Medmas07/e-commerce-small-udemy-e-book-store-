@@ -55,6 +55,9 @@
           {% if app.user %}
             <li><a class="dropdown-item" href="{{ path('dashboard_path') }}">Dashboard</a></li>
             <li><a class="dropdown-item" href="/panier">Mon Panier</a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a class="dropdown-item" href="{{ path('admin_catalogue_index') }}">Catalogue Admin</a></li>
+            {% endif %}
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ path('app_logout') }}">log out</a></li>
           {% else %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Formation{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Modifier une Formation</h2>
+
+        {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.price) }}
+
+        <button class="btn btn-success mt-3">💾 Enregistrer</button>
+        <a href="{{ path('admin_catalogue_index') }}" class="btn btn-secondary mt-3">⬅ Retour</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
