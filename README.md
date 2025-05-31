@@ -43,13 +43,9 @@
 
 ### Idées bonus
 
-- Statistiques pour les formateurs
-
 - Système de notation/commentaires
 
 - Envoi d'email de confirmation
-
-- Génération de certificat
 
 - Filtrage avancé des formations
 
