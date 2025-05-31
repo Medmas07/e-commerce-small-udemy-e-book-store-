@@ -45,7 +45,7 @@ class CatalogueController extends AbstractController
 
         $allCategories = $ebookRepo->findAllCategories();
 
-        return $this->render('catalogue/admin.html.twig', [
+        return $this->render('catalogue/index.html.twig', [
             'formations' => $formations,
             'ebooks' => $ebooks,
             'searchQuery' => $query,
@@ -104,7 +104,7 @@ class CatalogueController extends AbstractController
 
         $allCategories = $ebookRepo->findAllCategories();
 
-        return $this->render('admin/catalogue/admin.html.twig', [
+        return $this->render('admin_roles/catalogue/admin.html.twig', [
             'formations' => $formations,
             'ebooks' => $ebooks,
             'searchQuery' => $query,
@@ -118,7 +118,7 @@ class CatalogueController extends AbstractController
     }
 
     // Edit Formation
-    #[Route('/admin/catalogue/formation/{id}/edit', name: 'admin_catalogue_formation_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin_roles/catalogue/formation/{id}/edit', name: 'admin_catalogue_formation_edit', methods: ['GET', 'POST'])]
     public function editFormation(Request $request, Formation $formation, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -132,14 +132,14 @@ class CatalogueController extends AbstractController
             return $this->redirectToRoute('admin_catalogue_index');
         }
 
-        return $this->render('admin/catalogue/edit_formation.html.twig', [
+        return $this->render('admin_roles/catalogue/edit_formation.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
         ]);
     }
 
     // Delete Formation
-    #[Route('/admin/catalogue/formation/{id}/delete', name: 'admin_catalogue_formation_delete', methods: ['POST'])]
+    #[Route('/admin_roles/catalogue/formation/{id}/delete', name: 'admin_catalogue_formation_delete', methods: ['POST'])]
     public function deleteFormation(Request $request, Formation $formation, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -153,7 +153,7 @@ class CatalogueController extends AbstractController
         return $this->redirectToRoute('admin_catalogue_index');
     }
 
-    #[Route('/admin/catalogue/book/{id}/edit', name: 'admin_catalogue_book_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin_roles/catalogue/book/{id}/edit', name: 'admin_catalogue_book_edit', methods: ['GET', 'POST'])]
     public function editBook(Request $request, Book $book, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -167,14 +167,14 @@ class CatalogueController extends AbstractController
             return $this->redirectToRoute('admin_catalogue_index');
         }
 
-        return $this->render('admin/catalogue/edit_book.html.twig', [
+        return $this->render('admin_roles/catalogue/edit_book.html.twig', [
             'book' => $book,
             'form' => $form->createView(),
         ]);
     }
 
     // Delete Formation
-    #[Route('/admin/catalogue/book/{id}/delete', name: 'admin_catalogue_book_delete', methods: ['POST'])]
+    #[Route('/admin_roles/catalogue/book/{id}/delete', name: 'admin_catalogue_book_delete', methods: ['POST'])]
     public function deleteBook(Request $request, Book $book, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

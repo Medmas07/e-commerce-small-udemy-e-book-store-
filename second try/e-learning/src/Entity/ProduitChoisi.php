@@ -16,6 +16,7 @@ class ProduitChoisi
 
     #[ORM\ManyToOne(targetEntity: Produit::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Produit $produit = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -110,7 +111,7 @@ class ProduitChoisi
     public function __clone(): void
     {
         $this->id = null;
-        $this->dateEtTempsAjout = new \DateTime(); // Remettre à maintenant si tu veux archiver le moment du clonage
+        $this->dateEtTempsAjout = new \DateTime(); 
     }
 
     

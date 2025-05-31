@@ -28,8 +28,8 @@ final class PanierController extends AbstractController
 
         $panier = $panierService->getCurrentPanier();
         $total = $panierService->calculateTotal();
-
-        return $this->render('panier/admin.html.twig', [
+// return $this->render('panier/index.html.twig', [
+        return $this->render('panier/index.html.twig', [
             'panier' => $panier,
             'total' => $total,
         ]);
@@ -64,7 +64,7 @@ final class PanierController extends AbstractController
         $session = $stripeService->createCheckoutSession([
             'price_data' => [
                 'currency' => 'eur',
-                'unit_amount' => $panier->getTotal(),
+                'unit_amount' => $panier->getTotal()*100,
                 'product_data' => [
                     'name' => 'Nom du produit',
                 ],
