@@ -4,32 +4,39 @@ namespace App\Controller;
 
 use App\Entity\Formation;
 use App\Form\FormationForm;
+use App\Repository\FormateurRepository;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/formation')]
+#[isgranted('ROLE_FORMATEUR')]
 final class FormationController extends AbstractController
 {
     #[Route(name: 'app_formation_index', methods: ['GET'])]
-    public function index(FormationRepository $formationRepository): Response
+    public function index(FormationRepository $formationRepository,FormateurRepository $formateurRepostiory): Response
     {
-        return $this->render('formation/UserDashboard.html.twig', [
-            'formations' => $formationRepository->findAll(),
+        $formateur=$formateurRepostiory->findOneBy(['user'=>$this->getUser()]);
+        $formations=$formationRepository->findBy(['formateur'=>$formateur]);
+        return $this->render('formation/index.html.twig', [
+            'formations' =>$formations ,
         ]);
     }
 
     #[Route('/new', name: 'app_formation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,FormateurRepository $formateurRepository): Response
     {
         $formation = new Formation();
         $form = $this->createForm(FormationForm::class, $formation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $formateur=$formateurRepository->findOneBy(['user'=>$this->getUser()]);
+            $formation->setFormateur($formateur);
             $entityManager->persist($formation);
             $entityManager->flush();
 

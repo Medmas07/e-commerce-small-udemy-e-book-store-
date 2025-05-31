@@ -1,11 +1,15 @@
 {% extends 'dashboard/UserDashboard.html.twig' %}
 
-{% block title %}New Formation{% endblock %}
+{% block title %}Nouvelle Formation{% endblock %}
 
 {% block body %}
-    <h1>Create new Formation</h1>
+    <div class="container py-4">
+        <h1 class="mb-4">➕ Créer une nouvelle formation</h1>
 
-    {{ include('formation/_form.html.twig') }}
+        <div class="card shadow-sm p-4 mb-4">
+            {{ include('formation/_form.html.twig', { 'button_label': 'Créer' }) }}
+        </div>
 
-    <a href="{{ path('app_formation_index') }}">back to list</a>
+        <a href="{{ path('app_formation_index') }}" class="btn btn-secondary mt-3">← Retour à la liste</a>
+    </div>
 {% endblock %}

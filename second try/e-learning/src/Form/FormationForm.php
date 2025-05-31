@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Formateur;
 use App\Entity\Formation;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,13 +15,11 @@ class FormationForm extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description')
             ->add('price')
+            ->add('description')
             ->add('published')
-            ->add('formateur', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
+            ->add('pdfFilename')
+
         ;
     }
 
