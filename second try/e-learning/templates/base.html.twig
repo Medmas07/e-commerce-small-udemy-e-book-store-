@@ -72,20 +72,38 @@
 
 
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="list-unstyled">
-      <li><a href="{{ path('home') }}" class="text-decoration-none d-block py-2">Accueil</a></li>
-      <li><a href="{{ path('catalogue_index') }}" class="text-decoration-none d-block py-2">Catalogue</a></li>
-      <li><a href="#" class="text-decoration-none d-block py-2">Nos offres</a></li>
-      <li><a href="#" class="text-decoration-none d-block py-2">Contact</a></li>
-    </ul>
-  </div>
-</div>
+
+    <div class="offcanvas offcanvas-start shadow" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title" id="sidebarLabel"><i class="fas fa-bars me-2"></i>Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body px-3">
+            <ul class="list-unstyled">
+                <li class="mb-2">
+                    <a href="{{ path('home') }}" class="sidebar-link">
+                        <i class="fas fa-home me-2"></i>Accueil
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="{{ path('catalogue_index') }}" class="sidebar-link">
+                        <i class="fas fa-book me-2"></i>Catalogue
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="sidebar-link">
+                        <i class="fas fa-tags me-2"></i>Nos offres
+                    </a>
+                </li>
+                <li class="mb-2">
+                    <a href="#" class="sidebar-link">
+                        <i class="fas fa-envelope me-2"></i>Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 
 
 
