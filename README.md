@@ -20,12 +20,12 @@
 
 ## 4. Rôles et responsabilités de chaque membre
 
-| Membre         | Rôle principal                 | Tâches réalisées                      |
-| -------------- | ------------------------------ | ------------------------------------- |
-| Med Amin       | Développement back-end Symfony | Gestion des formations, statistiques  |
-| Mohanned       | CRUD des formations            | Développement du controller Formation |
-| [Nom membre 3] | Front-end, intégration         | Dashboard, design                     |
-| [Nom membre 4] | Tests et documentation         | Tests fonctionnels, rédaction doc     |
+| Membre         | Rôle principal                  | Tâches réalisées                      |
+| -------------- | ------------------------------- | ------------------------------------- |
+| Med Amin       | Développement logique formateur | Gestion des formations, statistiques  |
+| Mohanned       | Authentif, Frontend             | Partie User, mail verif, dashboards   |
+| Mohammed       | Orchestration, paiement         | migrations, panier, paiement          |
+| Gara           | catalogue, livres et produits   | catalogue, livres et produits         |
 
 ## 5. Fonctionnalités principales (minimum requis + idées bonus)
 
@@ -42,8 +42,6 @@
 - Gestion des utilisateurs par l'admin
 
 ### Idées bonus
-
-- Système de notation/commentaires
 
 - Envoi d'email de confirmation
 
