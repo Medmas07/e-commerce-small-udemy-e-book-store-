@@ -1,3 +1,7 @@
+{% extends 'base.html.twig' %}
+{% block title %}commande{% endblock %}
+
+{% block body %}
 <h2>Mes commandes</h2>
 <ul>
     {% for commande in commandes %}
@@ -10,3 +14,4 @@
         <li>Aucune commande pour l’instant.</li>
     {% endfor %}
 </ul>
+{% endblock %}
