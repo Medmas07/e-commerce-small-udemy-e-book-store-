@@ -112,7 +112,7 @@ final class PanierController extends AbstractController
         return $this->render('paiement/success.html.twig');
     }
 
-    #[Route('/paiement/cancel', name: 'paiement_cancel')]
+   #[Route('/paiement/cancel', name: 'paiement_cancel')]
     public function cancel(EntityManagerInterface $entityManager): Response
     {
         /** @var User $user */
@@ -123,19 +123,31 @@ final class PanierController extends AbstractController
             ['dateCommande' => 'DESC']
         );
 
-        if ($commande && $commande->getStatut() === OrderStatus::PENDING) {
-            $commande->setStatut(OrderStatus::CANCELLED);
-
+        /*if ($commande && $commande->getStatut() === OrderStatus::PENDING) {
             $panierClone = $commande->getPanier();
+
             if ($panierClone) {
-                $commande->setPanier(null); 
+                $commande->setTotal($panierClone->getTotal()); 
+
+                foreach ($panierClone->getProduitChoisis() as $produit) {
+                    $entityManager->remove($produit);
+                }
+
                 $entityManager->remove($panierClone);
             }
 
+            $commande->setStatut(OrderStatus::CANCELLED);
+            $commande->setPanier(null); // on détache le panier
+            $entityManager->flush();
+        }
+*/
+        if ($commande) {
+            $commande->setStatut(OrderStatus::CANCELLED);
             $entityManager->flush();
         }
         return $this->render('paiement/cancel.html.twig');
     }
+
 
     #[Route('/mon-compte/commandes', name: 'mes_commandes')]
     public function commandes( CommandeRepository $commandeRepository): Response

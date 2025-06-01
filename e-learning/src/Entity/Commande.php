@@ -19,7 +19,7 @@ class Commande
     private ?User $user = null;
 
     #[ORM\OneToOne(inversedBy: 'commande', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Panier $panier = null;
 
     #[ORM\Column(enumType: OrderStatus::class)]
@@ -53,12 +53,13 @@ class Commande
         return $this->panier;
     }
 
-    public function setPanier(Panier $panier): static
+    public function setPanier(?Panier $panier): static
     {
         $this->panier = $panier;
 
         return $this;
     }
+
 
     public function getStatut(): ?OrderStatus
     {
