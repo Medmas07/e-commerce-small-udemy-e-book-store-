@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Enum\OrderStatus;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -359,5 +361,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function hasPurchasedFormation(Formation $formation): bool
+{
+    foreach ($this->getCommandes() as $commande) {
+        if ($commande->getStatut() === OrderStatus::PAID && $commande->getPanier()) {
+            foreach ($commande->getPanier()->getProduitChoisis() as $produitChoisi) {
+                if ($produitChoisi->getProduit() instanceof Formation && $produitChoisi->getProduit()->getId() === $formation->getId()) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+public function hasPurchasedBook(Book $book): bool
+{
+    foreach ($this->getCommandes() as $commande) {
+        if ($commande->getStatut() === OrderStatus::PAID && $commande->getPanier()) {
+            foreach ($commande->getPanier()->getProduitChoisis() as $produitChoisi) {
+                if ($produitChoisi->getProduit() instanceof Book && $produitChoisi->getProduit()->getId() === $book->getId()) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 
 }

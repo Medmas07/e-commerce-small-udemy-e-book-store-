@@ -57,9 +57,14 @@
                                 <span class="fw-bold text-success">{{ formation.price|number_format(2, '.', ',') }} DT</span>
                                 <a href="{{ path('catalogue_formation_show', { id: formation.id }) }}" class="btn btn-sm btn-outline-primary">Voir</a>
                             </div>
-                            <form action="{{ path('panier_add', { type: 'formation', id: formation.id }) }}" method="post" class="mt-2">
-                                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-cart-plus"></i> Ajouter au panier</button>
-                            </form>
+                            {% if user and user.hasPurchasedFormation(formation) %}
+                                <a href="{{ path('lecture_pdf', { filename: 'a.pdf' }) }}" class="btn btn-success w-100">🎓 Commencer la formation</a>
+                            {% else %}
+                                <form action="{{ path('panier_add', { type: 'formation', id: formation.id }) }}" method="post" class="mt-2">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-cart-plus"></i> Ajouter au panier</button>
+                                </form>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -81,9 +86,14 @@
                                 <span class="fw-bold text-success">{{ ebook.price|number_format(2, '.', ',') }} DT</span>
                                 <a href="{{ path('catalogue_ebook_show', { id: ebook.id }) }}" class="btn btn-sm btn-outline-primary">Voir</a>
                             </div>
-                            <form action="{{ path('panier_add', { type: 'ebook', id: ebook.id }) }}" method="post" class="mt-2">
-                                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-cart-plus"></i> Ajouter au panier</button>
-                            </form>
+                            {% if user and user.hasPurchasedBook(ebook) %}
+                                <a href="{{ path('lecture_pdf', { filename: 'a.pdf' }) }}" class="btn btn-success w-100">📖 Commencer la lecture</a>
+                            {% else %}
+                                <form action="{{ path('panier_add', { type: 'ebook', id: ebook.id }) }}" method="post" class="mt-2">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-cart-plus"></i> Ajouter au panier</button>
+                                </form>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>

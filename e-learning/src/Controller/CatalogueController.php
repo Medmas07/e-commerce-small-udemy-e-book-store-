@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 class CatalogueController extends AbstractController
 {
@@ -30,6 +32,8 @@ class CatalogueController extends AbstractController
         $type = $request->query->get('type');
         $category = $request->query->get('category');
         $sort = $request->query->get('sort');
+        $user = $this->getUser();
+
 
 
         $formations = [];
@@ -55,6 +59,7 @@ class CatalogueController extends AbstractController
             'selectedCategory' => $category,
             'allCategories' => $allCategories,
             'selectedSort' => $sort,
+            'user' => $user,
         ]);
     }
 
@@ -187,6 +192,25 @@ class CatalogueController extends AbstractController
 
         return $this->redirectToRoute('admin_catalogue_index');
     }
+
+
+    #[Route('/lecture/{filename}', name: 'lecture_pdf')]
+    public function lecturePdf(string $filename): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        // ici tu peux vérifier si l'utilisateur a acheté le fichier
+        // ...
+
+        $pdfPath = $this->getParameter('kernel.project_dir') . '/storage/protected/' . $filename;
+
+        if (!file_exists($pdfPath)) {
+            throw $this->createNotFoundException('Fichier non trouvé');
+        }
+
+        return new BinaryFileResponse($pdfPath);
+    }
+
 
 
 
