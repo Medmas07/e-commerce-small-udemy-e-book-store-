@@ -126,7 +126,7 @@ class Panier
 
         foreach ($this->getProduitChoisis() as $produitChoisi) {
             $cloned = clone $produitChoisi;
-            $cloned->setPanier($this); // attache le clone à ce panier
+            $cloned->setPanier($this); 
             $clonedProduits->add($cloned);
         }
 
