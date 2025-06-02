@@ -74,9 +74,16 @@ final class UserAccessController extends AbstractController
     {
         $user = $this->getUser();
         $formateur = null;
+        $revenue = 0;
 
         if (in_array('ROLE_FORMATEUR', $user->getRoles())) {
             $formateur = $formateurRepository->findOneBy(['user' => $user]);
+
+            if ($formateur) {
+                $revenue = $formateurRepository->calculateTotalRevenue($formateur);
+                $formateur->setTotalRevenue($revenue*0.8);
+                $formateur->setWallet($revenue*0.8); 
+            }
         }
 
         return $this->render('userRoles/show_profile.html.twig', [
@@ -84,6 +91,7 @@ final class UserAccessController extends AbstractController
             'formateur' => $formateur,
         ]);
     }
+
 
 
     #[Route('/dashboard/delete-profile', name: 'app_delete_user', methods: ['POST', 'DELETE'])]
